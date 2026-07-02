@@ -3,737 +3,2322 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>Racing Game 3D - Pack 2</title>
-  <style>
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-    body {
-      margin: 0;
-      overflow: hidden;
-      background: #02030a;
-      font-family: Arial, sans-serif;
-      color: white;
-      touch-action: none;
-    }
-
-    canvas { display: block; }
-
-    #hud {
-      position: fixed;
-      top: 12px;
-      left: 12px;
-      padding: 10px 14px;
-      border: 1px solid rgba(0, 180, 255, 0.45);
-      background: rgba(0, 0, 0, 0.48);
-      border-radius: 12px;
-      font-size: 14px;
-      z-index: 10;
-      backdrop-filter: blur(6px);
-      box-shadow: 0 0 18px rgba(0, 150, 255, 0.25);
-      min-width: 190px;
-    }
-
-    #hud strong { color: #34c9ff; }
-    #hud .pack2 { color: #ffb84d; }
-
-    #menu {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 30;
-      background:
-        radial-gradient(circle at center, rgba(255, 138, 0, 0.18), rgba(0, 0, 0, 0.94)),
-        linear-gradient(135deg, rgba(0, 0, 30, 0.85), rgba(0, 0, 0, 0.96));
-    }
-
-    .menu-card {
-      width: min(92vw, 560px);
-      padding: 28px;
-      border-radius: 22px;
-      border: 1px solid rgba(255, 170, 50, 0.68);
-      background: rgba(0, 0, 0, 0.58);
-      text-align: center;
-      box-shadow: 0 0 35px rgba(255, 140, 0, 0.30);
-    }
-
-    .menu-card h1 {
-      margin: 0 0 8px;
-      font-size: 40px;
-      letter-spacing: 1px;
-    }
-
-    .menu-card h1 span { color: #ffb84d; }
-
-    .menu-card p {
-      margin: 8px 0;
-      color: #ffe0b0;
-      line-height: 1.45;
-    }
-
-    .menu-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 18px;
-    }
-
-    .menu-card button {
-      width: 100%;
-      padding: 15px 16px;
-      border: 0;
-      border-radius: 14px;
-      background: linear-gradient(90deg, #ff7a00, #ffd166);
-      color: #1b0e00;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 0 24px rgba(255, 160, 0, 0.4);
-    }
-
-    .menu-card button.blue {
-      background: linear-gradient(90deg, #007bff, #00d4ff);
-      color: white;
-    }
-
-    #message {
-      position: fixed;
-      top: 12px;
-      right: 12px;
-      z-index: 10;
-      max-width: 280px;
-      padding: 10px 14px;
-      border-radius: 12px;
-      background: rgba(0, 0, 0, 0.48);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      color: #fff4dc;
-      font-size: 13px;
-    }
-
-    #mobileControls {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      padding: 0 18px;
-      z-index: 20;
-      pointer-events: none;
-    }
-
-    .control-group {
-      display: flex;
-      gap: 12px;
-      pointer-events: auto;
-    }
-
-    .control-btn {
-      width: 68px;
-      height: 68px;
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      border-radius: 50%;
-      background: rgba(255, 130, 0, 0.58);
-      color: white;
-      font-size: 28px;
-      font-weight: bold;
-      box-shadow: 0 0 18px rgba(255, 140, 0, 0.42);
-      backdrop-filter: blur(8px);
-      user-select: none;
-    }
-
-    .control-btn.nitro {
-      background: rgba(0, 160, 255, 0.62);
-      font-size: 18px;
-    }
-
-    .control-btn:active {
-      transform: scale(0.95);
-      background: rgba(255, 200, 0, 0.78);
-    }
-
-    @media (min-width: 900px) {
-      #mobileControls { opacity: 0.35; }
-    }
-  </style>
+  <title>Racing Realista V66</title>
+  <meta name="theme-color" content="#050610" />
+  <meta name="description" content="Juego de coches 3D realista con ciudad, carreras, misiones, tienda, progreso y PWA." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="hud">
-    <div><strong id="packName">PACK 2:</strong> <span id="mapName">Desierto Neon</span></div>
-    <div>Velocidad: <span id="speed">0</span> km/h</div>
-    <div>Monedas: <span id="coins">0</span></div>
-    <div>Nitro: <span id="nitro">100</span>%</div>
+  <div id="loadingScreen">
+    <div class="loading-card">
+      <h1>RACING <span>REALISTA</span></h1>
+      <p id="loadingText">Preparando motor...</p>
+      <div class="loading-bar"><div id="loadingFill"></div></div>
+      <p class="small" id="loadingTip">Consejo: usa nitro en las rectas.</p>
+    </div>
   </div>
 
-  <div id="message">
-    PC: W/S acelerar-frenar, A/D girar, ESPACIO nitro. Móvil: botones.
-  </div>
+  <main id="mainMenu" class="screen active">
+    <div class="panel main-panel">
+      <h1>RACING <span>REALISTA</span></h1>
+      <p data-i18n="mainSubtitle">V66: perfil de piloto, tarjeta compartible, estadísticas destacadas, temporada, patrocinadores, piezas, economía y PWA.</p>
 
-  <div id="menu">
-    <div class="menu-card">
-      <h1>RACING <span>GAME</span></h1>
-      <p>Versión 2: ahora con <b>Pack 1</b> y <b>Pack 2</b>.</p>
-      <p>Pack 2 añade desierto industrial, nitro, rampas y ambiente naranja/neón.</p>
-      <div class="menu-row">
-        <button class="blue" id="pack1Btn">JUGAR PACK 1</button>
-        <button id="pack2Btn">JUGAR PACK 2</button>
+      <div class="mode-grid">
+        <button id="playBtn" class="mode-card primary">
+          <span class="mode-icon">🏁</span>
+          <b data-i18n="modeRace">CARRERA</b>
+          <small data-i18n="modeRaceDesc">3 vueltas · Rivales IA · Recompensa alta</small>
+        </button>
+
+        <button id="freeBtn" class="mode-card">
+          <span class="mode-icon">🌆</span>
+          <b data-i18n="modeFree">MUNDO LIBRE</b>
+          <small data-i18n="modeFreeDesc">Ciudad · Misiones · Recompensas urbanas</small>
+        </button>
+
+        <button id="duelBtn" class="mode-card">
+          <span class="mode-icon">⚔️</span>
+          <b>DUELO LOCAL</b>
+          <small>Jugador 1 vs Jugador 2 · Mismo teclado</small>
+        </button>
+
+        <button id="chaseBtn" class="mode-card">
+          <span class="mode-icon">🚨</span>
+          <b data-i18n="modeChase">PERSECUCIÓN</b>
+          <small data-i18n="modeChaseDesc">Policía · Daños · Aguanta el máximo</small>
+        </button>
+      </div>
+      <button id="garageBtn" data-i18n="garage">GARAJE</button>
+      <button id="showroomBtn">SHOWROOM 3D</button>
+      <button id="highlightsBtn">DESTACADOS</button>
+      <button id="customBtn" data-i18n="customize">PERSONALIZAR</button>
+      <button id="liveryBtn">VINILOS</button>
+      <button id="crewBtn">EQUIPO</button>
+      <button id="shopBtn" data-i18n="shop">TIENDA / MEJORAS</button>
+      <button id="workshopBtn">TALLER</button>
+      <button id="partsProBtn">PIEZAS PRO</button>
+      <button id="profileBtn" data-i18n="profile">PERFIL / MISIONES</button>
+      <button id="careerBtn">MODO CARRERA</button>
+      <button id="eventsBtn">EVENTOS</button>
+      <button id="weeklyBtn">SEMANALES</button>
+      <button id="seasonPassBtn">TEMPORADA</button>
+      <button id="storyBtn">HISTORIA</button>
+      <button id="trophiesBtn">TROFEOS</button>
+      <button id="carAlbumBtn">ÁLBUM</button>
+      <button id="mapBtn">MAPA / GPS</button>
+      <button id="customRoutesBtn">RUTAS</button>
+      <button id="replayBtn">REPETICIÓN</button>
+      <button id="skillChallengesBtn">HABILIDAD</button>
+      <button id="radioBtn">RADIO</button>
+      <button id="achievementsBtn" data-i18n="achievements">LOGROS</button>
+      <button id="rankingBtn">RANKING</button>
+      <button id="mapsBtn">CIRCUITOS</button>
+      <button id="installBtn" class="hidden">INSTALAR APP</button>
+      <button id="weatherBtn">CLIMA</button>
+      <button id="extremeWeatherBtn">CLIMA EXTREMO</button>
+      <button id="photoBtn">MODO FOTO</button>
+      <button id="posterBtn">PÓSTERS</button>
+      <button id="trailerBtn">TRÁILER</button>
+      <button id="devBtn" data-i18n="dev">DEV / DIAGNÓSTICO</button>
+      <button id="saveBtn" data-i18n="save">GUARDADO</button>
+      <button id="settingsBtn" data-i18n="settings">AJUSTES</button>
+      <button id="graphicsBtn">GRÁFICOS</button>
+      <button id="accessibilityBtn">ACCESIBILIDAD</button>
+      <button id="hudEditorBtn">EDITOR HUD</button>
+      <button id="guidedTutorialBtn">TUTORIAL GUIADO</button>
+      <button id="helpBtn" data-i18n="help">AYUDA</button>
+    </div>
+  </main>
+
+  <section id="garageScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Garaje</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+      <div class="layout">
+        <div>
+          <h3 id="carName">Coche</h3>
+          <p id="carStyle">Estilo</p>
+          <p id="carLockStatus" class="small">Disponible</p>
+          <div class="stats">
+            <div>Velocidad <span id="statSpeed"></span></div>
+            <div>Aceleración <span id="statAccel"></span></div>
+            <div>Control <span id="statHandling"></span></div>
+          </div>
+          <div class="selector-row">
+            <button id="prevCar">←</button>
+            <button id="useCar" class="primary">USAR COCHE</button>
+            <button id="nextCar">→</button>
+          </div>
+        </div>
+        <div class="preview-note">
+          <p>El coche se ve en 3D dentro del juego. Puedes rotarlo desde este menú usando las flechas.</p>
+          <p class="small">Los modelos son inspirados, sin logos oficiales.</p>
+        </div>
       </div>
     </div>
+  </section>
+
+  <section id="mapsScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Circuitos</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+      <div>
+        <h3 id="mapName">Mapa</h3>
+        <p id="mapTheme">Descripción del circuito</p>
+        <p id="mapLockStatus" class="small">Disponible</p>
+        <div class="selector-row">
+          <button id="prevMap">←</button>
+          <button id="useMap" class="primary">USAR MAPA</button>
+          <button id="nextMap">→</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="radioScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Radio del coche</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Activa música procedural mientras conduces. No necesita archivos externos.</p>
+
+      <div class="radio-grid">
+        <div class="radio-card radio-now">
+          <h3>Reproduciendo</h3>
+          <p id="radioStationLabel">Radio apagada</p>
+          <p id="radioTrackLabel">--</p>
+          <div class="radio-visualizer">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+
+        <div class="radio-card">
+          <h3>Controles</h3>
+          <button id="radioToggle" class="primary">RADIO: OFF</button>
+          <button id="radioNext">SIGUIENTE CANCIÓN</button>
+          <p>Volumen radio</p>
+          <input id="radioVolume" type="range" min="0" max="100" value="45">
+          <p>Volumen: <b id="radioVolumeLabel">45%</b></p>
+        </div>
+
+        <div class="radio-card">
+          <h3>Emisoras</h3>
+          <div class="selector-row">
+            <button class="stationBtn" data-station="electro">Electro Drive</button>
+            <button class="stationBtn" data-station="synth">Synth Night</button>
+            <button class="stationBtn" data-station="arcade">Arcade FM</button>
+            <button class="stationBtn" data-station="chill">Chill Road</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="mapScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Mapa / GPS</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Consulta la ciudad, activa el GPS y encuentra zonas importantes.</p>
+
+      <div class="map-layout">
+        <div class="big-map-wrap">
+          <canvas id="bigMap" width="520" height="520"></canvas>
+          <div class="map-legend">
+            <span>🔵 Jugador</span>
+            <span>🟠 Objetivo</span>
+            <span>🟢 Taller</span>
+            <span>🟣 Drift</span>
+            <span>🟡 Bonus</span>
+            <span>🔴 Policía</span>
+          </div>
+        </div>
+
+        <div class="map-panel">
+          <h3>GPS rápido</h3>
+          <button class="gpsTarget" data-target="garage">GPS al garaje</button>
+          <button class="gpsTarget" data-target="workshop">GPS al taller</button>
+          <button class="gpsTarget" data-target="drift">GPS zona drift</button>
+          <button class="gpsTarget" data-target="bonus">GPS bonus</button>
+          <button id="clearGPS">QUITAR GPS</button>
+          <p>Destino: <b id="gpsTargetLabel">Sin destino</b></p>
+          <p>Distancia: <b id="gpsDistance">--</b></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="eventsScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Eventos Diarios</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Completa retos diarios y gana recompensas extra.</p>
+
+      <div class="events-grid">
+        <div class="event-card featured-event">
+          <h3>Evento del día</h3>
+          <p id="dailyEventTitle">Cargando evento...</p>
+          <p id="dailyEventDesc">--</p>
+          <div class="loading-bar"><div id="dailyEventFill"></div></div>
+          <p>Progreso: <b id="dailyEventProgress">0/0</b></p>
+          <p>Recompensa: <b id="dailyEventReward">0 monedas</b></p>
+          <button id="claimDailyEvent" class="primary">RECLAMAR EVENTO</button>
+        </div>
+
+        <div class="event-card">
+          <h3>Racha diaria</h3>
+          <p>Racha actual: <b id="dailyStreak">0 días</b></p>
+          <p>Bonus de racha: <b id="streakBonus">0 monedas</b></p>
+          <button id="claimDailyLogin">BONUS DIARIO</button>
+        </div>
+
+        <div class="event-card">
+          <h3>Retos especiales</h3>
+          <div id="specialEventsList" class="events-list"></div>
+        </div>
+
+        <div class="event-card">
+          <h3>Acciones</h3>
+          <button id="refreshEvents">ACTUALIZAR EVENTOS</button>
+          <button id="resetEvents">RESETEAR EVENTOS</button>
+          <p class="small">Los eventos se guardan en este navegador.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="careerScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Modo Carrera</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Completa contratos, gana reputación y sube de temporada.</p>
+
+      <div class="career-grid">
+        <div class="career-card">
+          <h3>Progreso de piloto</h3>
+          <p>Temporada: <b id="careerSeason">1</b></p>
+          <p>Reputación: <b id="careerRep">0</b></p>
+          <p>Contratos completados: <b id="careerContractsDone">0</b></p>
+          <div class="loading-bar"><div id="careerProgressFill"></div></div>
+        </div>
+
+        <div class="career-card">
+          <h3>Contrato activo</h3>
+          <p id="careerContractText">Sin contrato activo.</p>
+          <p>Recompensa: <b id="careerReward">0 monedas</b></p>
+          <button id="claimCareerReward" class="primary">RECLAMAR</button>
+        </div>
+
+        <div class="career-card">
+          <h3>Contratos disponibles</h3>
+          <div id="careerContractsList" class="career-list"></div>
+        </div>
+
+        <div class="career-card">
+          <h3>Acciones</h3>
+          <button id="newCareerSeason">NUEVA TEMPORADA</button>
+          <button id="resetCareer">RESETEAR CARRERA</button>
+          <p class="small">Cada temporada aumenta las recompensas y la dificultad.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="workshopScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Taller Mecánico</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Repara el coche, revisa daños y prepara la siguiente carrera.</p>
+
+      <div class="workshop-grid">
+        <div class="workshop-card">
+          <h3>Estado del coche</h3>
+          <div class="car-health-ring">
+            <span id="workshopHealth">100%</span>
+          </div>
+          <p id="workshopStatus">Coche listo.</p>
+        </div>
+
+        <div class="workshop-card">
+          <h3>Reparación</h3>
+          <p>Coste estimado: <b id="repairCost">0 monedas</b></p>
+          <button id="repairCar" class="primary">REPARAR COCHE</button>
+          <button id="fullService">REVISIÓN COMPLETA</button>
+          <p class="small">La revisión completa deja el coche al 100% y recarga nitro.</p>
+        </div>
+
+        <div class="workshop-card">
+          <h3>Consejo técnico</h3>
+          <p id="workshopAdvice">Sin daños importantes.</p>
+        </div>
+
+        <div class="workshop-card">
+          <h3>Misiones de taller</h3>
+          <p id="workshopMissionText">Sin misión activa.</p>
+          <button id="startPartsMission" class="primary">ENTREGAR PIEZAS</button>
+          <button id="startRepairMission">REPARACIÓN RÁPIDA</button>
+          <p class="small">Completa misiones para ganar monedas, XP y bonos de taller.</p>
+        </div>
+
+        <div class="workshop-card">
+          <h3>Bonos de taller</h3>
+          <p>Bonos disponibles: <b id="workshopCoupons">0</b></p>
+          <button id="useWorkshopCoupon">USAR BONO DE REPARACIÓN</button>
+          <p class="small">Un bono reduce mucho el coste de reparar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="rankingScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Ranking Local</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Guarda tus mejores resultados en este navegador.</p>
+
+      <div class="ranking-grid">
+        <div class="ranking-card">
+          <h3>Mejores carreras</h3>
+          <div id="bestRaceList" class="ranking-list">Sin datos.</div>
+        </div>
+
+        <div class="ranking-card">
+          <h3>Duelos locales</h3>
+          <div id="duelHistoryList" class="ranking-list">Sin datos.</div>
+        </div>
+
+        <div class="ranking-card">
+          <h3>Historial reciente</h3>
+          <div id="recentHistoryList" class="ranking-list">Sin datos.</div>
+        </div>
+
+        <div class="ranking-card">
+          <h3>Acciones</h3>
+          <button id="exportRanking" class="primary">EXPORTAR RANKING</button>
+          <button id="clearRanking">BORRAR RANKING</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="weatherScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Clima / Ambiente</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Cambia el ambiente del juego en tiempo real.</p>
+
+      <div class="weather-grid">
+        <div class="weather-card">
+          <h3>Clima</h3>
+          <div class="selector-row">
+            <button class="weatherBtn" data-weather="clear">Despejado</button>
+            <button class="weatherBtn" data-weather="rain">Lluvia</button>
+            <button class="weatherBtn" data-weather="fog">Niebla</button>
+            <button class="weatherBtn" data-weather="storm">Tormenta</button>
+          </div>
+        </div>
+
+        <div class="weather-card">
+          <h3>Hora</h3>
+          <div class="selector-row">
+            <button class="timeBtn" data-time="day">Día</button>
+            <button class="timeBtn" data-time="sunset">Atardecer</button>
+            <button class="timeBtn" data-time="night">Noche</button>
+          </div>
+        </div>
+
+        <div class="weather-card">
+          <h3>Automático</h3>
+          <button id="weatherAuto">CICLO AUTO: OFF</button>
+          <p class="small">Cambia lentamente entre día, noche y clima.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="photoScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Modo Foto</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Coloca la cámara, aplica un filtro y guarda una captura PNG.</p>
+
+      <div class="photo-grid">
+        <div class="photo-card">
+          <h3>Controles de cámara</h3>
+          <p>Usa las flechas del teclado para mover la cámara en modo foto.</p>
+          <p>W/S acercar y alejar · Q/E subir y bajar</p>
+          <button id="photoEnable" class="primary">ACTIVAR MODO FOTO</button>
+          <button id="photoDisable">DESACTIVAR</button>
+        </div>
+
+        <div class="photo-card">
+          <h3>Filtros</h3>
+          <div class="selector-row">
+            <button class="filterBtn" data-filter="none">Normal</button>
+            <button class="filterBtn" data-filter="cinematic">Cine</button>
+            <button class="filterBtn" data-filter="noir">Noir</button>
+            <button class="filterBtn" data-filter="neon">Neón</button>
+            <button class="filterBtn" data-filter="warm">Cálido</button>
+          </div>
+        </div>
+
+        <div class="photo-card">
+          <h3>Captura</h3>
+          <button id="togglePhotoHUD">OCULTAR HUD</button>
+          <button id="takeScreenshot" class="primary">GUARDAR PNG</button>
+          <p class="small">La captura se descarga con lo que se ve en pantalla.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="devScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Dev / Diagnóstico</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <div class="dev-grid">
+        <div class="dev-card">
+          <h3>Rendimiento</h3>
+          <p>FPS actual: <b id="devFPS">0</b></p>
+          <p>Calidad: <b id="devQuality">--</b></p>
+          <p>Objetos en escena: <b id="devObjects">0</b></p>
+          <button id="toggleFPS" class="primary">MOSTRAR FPS</button>
+        </div>
+
+        <div class="dev-card">
+          <h3>Compatibilidad</h3>
+          <p>WebGL: <b id="devWebGL">--</b></p>
+          <p>PWA: <b id="devPWA">--</b></p>
+          <p>Service Worker: <b id="devSW">--</b></p>
+          <p>Online: <b id="devOnline">--</b></p>
+        </div>
+
+        <div class="dev-card">
+          <h3>Acciones rápidas</h3>
+          <button id="forceLowQuality">FORZAR CALIDAD BAJA</button>
+          <button id="clearErrors">LIMPIAR ERRORES</button>
+          <button id="copyDiagnostics">COPIAR DIAGNÓSTICO</button>
+        </div>
+
+        <div class="dev-card error-card">
+          <h3>Errores</h3>
+          <div id="devErrors">Sin errores.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tutorialScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Tutorial rápido</h2>
+        <button id="skipTutorial">SALTAR</button>
+      </div>
+      <div class="tutorial-card">
+        <h3 id="tutorialTitle">Bienvenido</h3>
+        <p id="tutorialText">Aprende lo básico antes de correr.</p>
+        <div class="loading-bar"><div id="tutorialProgress"></div></div>
+        <div class="selector-row">
+          <button id="tutorialPrev">← ATRÁS</button>
+          <button id="tutorialNext" class="primary">SIGUIENTE →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="achievementsScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Logros</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+      <p>Desbloquea logros para ganar monedas y XP extra.</p>
+      <div id="achievementsList" class="achievements-list"></div>
+    </div>
+  </section>
+
+  <section id="saveScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Guardado / Exportación</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Guarda tu progreso en un archivo para restaurarlo después o pasarlo a otra versión del juego.</p>
+
+      <div class="save-slots">
+        <div class="save-slot-card">
+          <h3>Slot 1</h3>
+          <p id="slotSummary_1">Vacío</p>
+          <button class="saveSlot" data-slot="1">GUARDAR</button>
+          <button class="loadSlot" data-slot="1">CARGAR</button>
+          <button class="deleteSlot" data-slot="1">BORRAR</button>
+        </div>
+        <div class="save-slot-card">
+          <h3>Slot 2</h3>
+          <p id="slotSummary_2">Vacío</p>
+          <button class="saveSlot" data-slot="2">GUARDAR</button>
+          <button class="loadSlot" data-slot="2">CARGAR</button>
+          <button class="deleteSlot" data-slot="2">BORRAR</button>
+        </div>
+        <div class="save-slot-card">
+          <h3>Slot 3</h3>
+          <p id="slotSummary_3">Vacío</p>
+          <button class="saveSlot" data-slot="3">GUARDAR</button>
+          <button class="loadSlot" data-slot="3">CARGAR</button>
+          <button class="deleteSlot" data-slot="3">BORRAR</button>
+        </div>
+        <div class="save-slot-card">
+          <h3>Autosave</h3>
+          <p id="autosaveSummary">Sin autosave</p>
+          <button id="loadAutosave">CARGAR AUTOSAVE</button>
+          <button id="toggleAutosave">AUTOSAVE: ON</button>
+        </div>
+      </div>
+
+      <div class="save-grid">
+        <div class="save-card">
+          <h3>Exportar progreso</h3>
+          <p>Descarga un archivo `.json` con monedas, nivel, mejoras, desbloqueos y personalización.</p>
+          <button id="exportSave" class="primary">EXPORTAR</button>
+        </div>
+
+        <div class="save-card">
+          <h3>Importar progreso</h3>
+          <p>Restaura una partida guardada desde un archivo `.json`.</p>
+          <input id="importSaveFile" type="file" accept=".json,application/json" />
+          <button id="importSave">IMPORTAR</button>
+        </div>
+
+        <div class="save-card danger-card">
+          <h3>Resetear partida</h3>
+          <p>Borra monedas, nivel, XP, mejoras, misiones, desbloqueos y personalización.</p>
+          <button id="resetSave">RESETEAR</button>
+        </div>
+
+        <div class="save-card">
+          <h3>Estado actual</h3>
+          <p id="saveSummary">Sin datos</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="customScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Personalizar coche</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Coche actual: <b id="customCarName">Coche</b></p>
+
+      <div class="custom-grid">
+        <div class="custom-card">
+          <h3>Color</h3>
+          <div class="selector-row">
+            <button class="paintBtn" data-paint="red">Rojo</button>
+            <button class="paintBtn" data-paint="blue">Azul</button>
+            <button class="paintBtn" data-paint="yellow">Amarillo</button>
+            <button class="paintBtn" data-paint="black">Negro</button>
+            <button class="paintBtn" data-paint="white">Blanco</button>
+            <button class="paintBtn" data-paint="purple">Morado</button>
+          </div>
+        </div>
+
+        <div class="custom-card">
+          <h3>Neón</h3>
+          <div class="selector-row">
+            <button class="neonBtn" data-neon="none">Sin neón</button>
+            <button class="neonBtn" data-neon="cyan">Cian</button>
+            <button class="neonBtn" data-neon="pink">Rosa</button>
+            <button class="neonBtn" data-neon="orange">Naranja</button>
+            <button class="neonBtn" data-neon="green">Verde</button>
+          </div>
+        </div>
+
+        <div class="custom-card">
+          <h3>Alerón</h3>
+          <div class="selector-row">
+            <button class="spoilerBtn" data-spoiler="none">Sin alerón</button>
+            <button class="spoilerBtn" data-spoiler="sport">Sport</button>
+            <button class="spoilerBtn" data-spoiler="racing">Racing</button>
+          </div>
+        </div>
+
+        <div class="custom-card">
+          <h3>Guardar</h3>
+          <p id="customSummary">Estilo actual</p>
+          <button id="saveCustom" class="primary">GUARDAR ESTILO</button>
+        </div>
+      </div>
+      <p class="small">La personalización se guarda por coche y se aplica al jugar.</p>
+    </div>
+  </section>
+
+  <section id="profileScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Perfil / Misiones</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <div class="profile-grid">
+        <div class="profile-card">
+          <h3>Jugador</h3>
+          <p>Nivel: <b id="profileLevel">1</b></p>
+          <p>XP: <b id="profileXP">0</b>/<b id="profileNextXP">100</b></p>
+          <div class="xpbar"><div id="xpFill"></div></div>
+          <p>Monedas: <b id="profileCoins">0</b></p>
+        </div>
+
+        <div class="profile-card">
+          <h3>Estadísticas</h3>
+          <p>Carreras completadas: <b id="statRaces">0</b></p>
+          <p>Victorias: <b id="statWins">0</b></p>
+          <p>Persecuciones: <b id="statChases">0</b></p>
+          <p>Monedas recogidas: <b id="statCoinsCollected">0</b></p>
+          <p>Misiones urbanas: <b id="statCityMissions">0</b></p>
+        </div>
+      </div>
+
+      <h3>Misiones</h3>
+      <div id="missionsList" class="missions-list"></div>
+    </div>
+  </section>
+
+  <section id="shopScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Tienda / Mejoras</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Monedas totales: <b id="walletCoins">0</b></p>
+      <p>Coche actual: <b id="shopCarName">Coche</b></p>
+
+      <div class="upgrade-grid">
+        <div class="upgrade-card">
+          <h3>Velocidad</h3>
+          <p>Nivel: <b id="upSpeed">0</b>/5</p>
+          <button id="buySpeed">Mejorar</button>
+        </div>
+        <div class="upgrade-card">
+          <h3>Aceleración</h3>
+          <p>Nivel: <b id="upAccel">0</b>/5</p>
+          <button id="buyAccel">Mejorar</button>
+        </div>
+        <div class="upgrade-card">
+          <h3>Control</h3>
+          <p>Nivel: <b id="upHandling">0</b>/5</p>
+          <button id="buyHandling">Mejorar</button>
+        </div>
+        <div class="upgrade-card">
+          <h3>Nitro</h3>
+          <p>Nivel: <b id="upNitro">0</b>/5</p>
+          <button id="buyNitro">Mejorar</button>
+        </div>
+        <div class="upgrade-card">
+          <h3>Resistencia</h3>
+          <p>Nivel: <b id="upArmor">0</b>/5</p>
+          <button id="buyArmor">Mejorar</button>
+        </div>
+      </div>
+      <p class="small">Cada mejora sube el precio. Las mejoras se guardan por coche.</p>
+    </div>
+  </section>
+
+  <section id="pilotProfileScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Perfil de piloto</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Crea una tarjeta de piloto con tus estadísticas, rango, coche favorito y progreso para compartir.</p>
+
+      <div class="pilot-grid">
+        <div class="pilot-card featured-pilot">
+          <h3>Tarjeta pública</h3>
+          <label>Nombre de piloto</label>
+          <input id="pilotNameInput" maxlength="22" value="Piloto Neon">
+          <label>Lema</label>
+          <input id="pilotMottoInput" maxlength="48" value="Vidas solo hay una, a disfrutarla al máximo">
+          <p>Rango global: <b id="pilotRank">--</b></p>
+          <p>Valoración: <b id="pilotRating">0</b></p>
+          <button id="savePilotProfile" class="primary">GUARDAR PERFIL</button>
+        </div>
+
+        <div class="pilot-card">
+          <h3>Destacados</h3>
+          <div id="pilotHighlights" class="pilot-list"></div>
+        </div>
+
+        <div class="pilot-card">
+          <h3>Acciones</h3>
+          <button id="generatePilotCard">GENERAR TARJETA</button>
+          <button id="copyPilotSummary">COPIAR RESUMEN</button>
+          <button id="exportPilotProfile">EXPORTAR PERFIL JSON</button>
+        </div>
+
+        <div class="pilot-card wide-pilot">
+          <h3>Vista de tarjeta</h3>
+          <canvas id="pilotCardCanvas" width="1000" height="560"></canvas>
+        </div>
+
+        <div class="pilot-card wide-pilot">
+          <h3>Resumen para compartir</h3>
+          <textarea id="pilotShareText" rows="8" readonly></textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="seasonPassScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Temporada</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Sube niveles de temporada, completa misiones y reclama premios del pase.</p>
+
+      <div class="season-grid">
+        <div class="season-card featured-season">
+          <h3 id="seasonName">Temporada Neon</h3>
+          <p>Nivel: <b id="seasonLevel">1</b></p>
+          <p>Puntos: <b id="seasonPoints">0/100</b></p>
+          <p>Premios cobrados: <b id="seasonClaimed">0</b></p>
+          <div class="loading-bar"><div id="seasonFill"></div></div>
+          <button id="claimSeasonRewards" class="primary">COBRAR PREMIOS</button>
+        </div>
+
+        <div class="season-card">
+          <h3>Misiones de temporada</h3>
+          <div id="seasonMissions" class="season-list"></div>
+        </div>
+
+        <div class="season-card">
+          <h3>Acciones</h3>
+          <button id="seasonAddTestPoints">SUMAR PUNTOS TEST</button>
+          <button id="seasonReset">REINICIAR TEMPORADA</button>
+          <p class="small">Los puntos también se generan por progreso real del juego.</p>
+        </div>
+
+        <div class="season-card wide-season">
+          <h3>Pase de recompensas</h3>
+          <div id="seasonRewards" class="season-rewards"></div>
+        </div>
+
+        <div class="season-card wide-season">
+          <h3>Historial</h3>
+          <div id="seasonHistory" class="season-list"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sponsorsScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Patrocinadores</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Firma contratos, cumple objetivos de marca y gana monedas, XP y reputación.</p>
+
+      <div class="sponsors-grid">
+        <div class="sponsors-card featured-sponsors">
+          <h3>Contrato activo</h3>
+          <p>Marca: <b id="sponsorActiveName">Ninguna</b></p>
+          <p>Nivel: <b id="sponsorLevel">0</b></p>
+          <p>Reputación: <b id="sponsorReputation">0</b></p>
+          <p>Progreso: <b id="sponsorProgress">0/0</b></p>
+          <div class="loading-bar"><div id="sponsorFill"></div></div>
+          <button id="claimSponsorReward" class="primary">COBRAR CONTRATO</button>
+        </div>
+
+        <div class="sponsors-card">
+          <h3>Marcas disponibles</h3>
+          <div id="sponsorsList" class="sponsors-list"></div>
+        </div>
+
+        <div class="sponsors-card">
+          <h3>Objetivos actuales</h3>
+          <div id="sponsorObjectives" class="sponsors-list"></div>
+        </div>
+
+        <div class="sponsors-card">
+          <h3>Acciones</h3>
+          <button id="rerollSponsorContract">NUEVO CONTRATO</button>
+          <button id="dropSponsorContract">ABANDONAR CONTRATO</button>
+          <p class="small">Los objetivos se basan en tus estadísticas reales de carreras, drift, rutas, policía y habilidad.</p>
+        </div>
+
+        <div class="sponsors-card wide-sponsors">
+          <h3>Historial de contratos</h3>
+          <div id="sponsorHistory" class="sponsors-list"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="partsProScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Piezas Pro</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Consigue piezas, instálalas por coche y mejora velocidad, nitro, manejo, frenos y resistencia.</p>
+
+      <div class="parts-pro-grid">
+        <div class="parts-pro-card featured-parts-pro">
+          <h3>Bonus instalados</h3>
+          <p>Coche: <b id="partsProCar">--</b></p>
+          <p>Motor: <b id="partsProMotor">--</b></p>
+          <p>Turbo: <b id="partsProTurbo">--</b></p>
+          <p>Neumáticos: <b id="partsProTires">--</b></p>
+          <p>Frenos: <b id="partsProBrakes">--</b></p>
+          <p>Chasis: <b id="partsProChassis">--</b></p>
+          <p>Total: <b id="partsProTotal">--</b></p>
+        </div>
+
+        <div class="parts-pro-card">
+          <h3>Packs</h3>
+          <button id="openBasicPartsPack" class="primary">PACK BÁSICO</button>
+          <button id="openRarePartsPack">PACK RARO</button>
+          <button id="openEpicPartsPack">PACK ÉPICO</button>
+          <p class="small">Los packs cuestan monedas del banco y dan piezas aleatorias.</p>
+        </div>
+
+        <div class="parts-pro-card">
+          <h3>Acciones</h3>
+          <button id="removeInstalledParts">QUITAR PIEZAS</button>
+          <button id="sellDuplicateParts">VENDER DUPLICADOS</button>
+          <button id="resetPartsPro">REINICIAR PIEZAS</button>
+        </div>
+
+        <div class="parts-pro-card wide-parts-pro">
+          <h3>Inventario</h3>
+          <div id="partsProInventory" class="parts-pro-list"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="economyScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Banco y economía</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Controla tus monedas, ingresos, gastos, bonus diarios y estadísticas financieras.</p>
+
+      <div class="economy-grid">
+        <div class="economy-card featured-economy">
+          <h3>Cuenta principal</h3>
+          <p>Monedas actuales: <b id="economyCoins">0</b></p>
+          <p>Ingresos totales: <b id="economyIncome">0</b></p>
+          <p>Gastos totales: <b id="economyExpenses">0</b></p>
+          <p>Balance: <b id="economyBalance">0</b></p>
+          <div class="loading-bar"><div id="economyFill"></div></div>
+        </div>
+
+        <div class="economy-card">
+          <h3>Bonus diario</h3>
+          <p>Racha banco: <b id="bankStreak">0</b></p>
+          <p>Próximo bonus: <b id="bankDailyReward">0</b> monedas</p>
+          <button id="claimBankDaily" class="primary">COBRAR BONUS</button>
+        </div>
+
+        <div class="economy-card">
+          <h3>Acciones rápidas</h3>
+          <button id="economyStarterPack">PACK DE PRUEBA</button>
+          <button id="economyRepairBudget">PRESUPUESTO TALLER</button>
+          <button id="economyRaceGrant">BONO CARRERA</button>
+          <p class="small">Acciones locales para probar la economía sin servidor.</p>
+        </div>
+
+        <div class="economy-card">
+          <h3>Consejo financiero</h3>
+          <p id="economyAdvice">--</p>
+        </div>
+
+        <div class="economy-card wide-economy">
+          <h3>Historial financiero</h3>
+          <div id="economyHistory" class="economy-list"></div>
+          <button id="clearEconomyHistory">BORRAR HISTORIAL</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="showroomProScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Showroom Pro</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Analiza coches, compara estadísticas, marca favoritos y lanza pruebas rápidas.</p>
+
+      <div class="showroom-pro-grid">
+        <div class="showroom-pro-card featured-showroom-pro">
+          <h3 id="showroomProCarName">Coche</h3>
+          <p>Rareza: <b id="showroomProRarity">--</b></p>
+          <p>Rol: <b id="showroomProRole">--</b></p>
+          <p>Valoración: <b id="showroomProRating">--</b></p>
+          <button id="showroomProFavorite" class="primary">MARCAR FAVORITO</button>
+          <button id="showroomProQuickTest">PRUEBA RÁPIDA</button>
+        </div>
+
+        <div class="showroom-pro-card">
+          <h3>Selector</h3>
+          <button id="showroomProPrev">◀ ANTERIOR</button>
+          <button id="showroomProNext">SIGUIENTE ▶</button>
+          <button id="showroomProSelect">USAR ESTE COCHE</button>
+          <button id="showroomProOpenCodes">EXPORTAR CÓDIGO</button>
+        </div>
+
+        <div class="showroom-pro-card wide-showroom-pro">
+          <h3>Comparativa de estadísticas</h3>
+          <div id="showroomProStats" class="showroom-pro-stats"></div>
+        </div>
+
+        <div class="showroom-pro-card">
+          <h3>Recomendación</h3>
+          <p id="showroomProRecommendation">--</p>
+          <p class="small">La recomendación combina velocidad, manejo, nitro y control.</p>
+        </div>
+
+        <div class="showroom-pro-card">
+          <h3>Favoritos</h3>
+          <div id="showroomProFavorites" class="showroom-pro-list"></div>
+        </div>
+
+        <div class="showroom-pro-card wide-showroom-pro">
+          <h3>Notas de conducción</h3>
+          <div id="showroomProNotes" class="showroom-pro-list"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="trailerScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Modo tráiler</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Crea escenas cinemáticas automáticas y textos listos para promocionar el juego.</p>
+
+      <div class="trailer-grid">
+        <div class="trailer-card featured-trailer">
+          <h3>Tráiler activo</h3>
+          <p>Escena: <b id="trailerSceneName">Ninguna</b></p>
+          <p>Tiempo: <b id="trailerTimer">0s</b></p>
+          <p>Estado: <b id="trailerStatus">Parado</b></p>
+          <div class="loading-bar"><div id="trailerFill"></div></div>
+        </div>
+
+        <div class="trailer-card">
+          <h3>Tipo de tráiler</h3>
+          <select id="trailerStyle">
+            <option value="cinematic">Cinemático</option>
+            <option value="action">Acción</option>
+            <option value="garage">Garaje / coches</option>
+            <option value="police">Persecución</option>
+            <option value="storm">Tormenta</option>
+          </select>
+          <button id="startTrailerMode" class="primary">INICIAR TRÁILER</button>
+          <button id="stopTrailerMode">PARAR TRÁILER</button>
+        </div>
+
+        <div class="trailer-card">
+          <h3>Opciones</h3>
+          <label><input id="trailerAutoCamera" type="checkbox" checked> Cámara automática</label>
+          <label><input id="trailerHideHUD" type="checkbox" checked> Ocultar HUD durante tráiler</label>
+          <label><input id="trailerSlowMotion" type="checkbox"> Sensación slow motion</label>
+          <label><input id="trailerUseWeather" type="checkbox" checked> Forzar clima visual</label>
+          <button id="saveTrailerSettings">GUARDAR OPCIONES</button>
+        </div>
+
+        <div class="trailer-card wide-trailer">
+          <h3>Guion para vídeo</h3>
+          <textarea id="trailerScript" rows="9" readonly></textarea>
+          <button id="copyTrailerScript">COPIAR GUIÓN</button>
+        </div>
+
+        <div class="trailer-card">
+          <h3>Escenas</h3>
+          <div id="trailerScenesList" class="trailer-list"></div>
+        </div>
+
+        <div class="trailer-card">
+          <h3>Historial</h3>
+          <div id="trailerHistory" class="trailer-list"></div>
+          <button id="clearTrailerHistory">BORRAR HISTORIAL</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="posterScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Creador de pósters</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Crea miniaturas tipo YouTube, pósters del coche y capturas gamer exportables en PNG.</p>
+
+      <div class="poster-grid">
+        <div class="poster-card featured-poster">
+          <h3>Diseño</h3>
+          <label>Título principal</label>
+          <input id="posterTitle" maxlength="32" value="CARRERA EXTREMA">
+          <label>Subtítulo</label>
+          <input id="posterSubtitle" maxlength="44" value="Neon City Challenge">
+          <label>Plantilla</label>
+          <select id="posterTemplate">
+            <option value="neon">Neón gamer</option>
+            <option value="storm">Tormenta épica</option>
+            <option value="champion">Campeón</option>
+            <option value="minimal">Minimalista</option>
+            <option value="wanted">Persecución</option>
+          </select>
+        </div>
+
+        <div class="poster-card">
+          <h3>Opciones</h3>
+          <label><input id="posterShowCar" type="checkbox" checked> Mostrar coche</label>
+          <label><input id="posterShowStats" type="checkbox" checked> Mostrar estadísticas</label>
+          <label><input id="posterShowName" type="checkbox" checked> Mostrar nombre del coche</label>
+          <label><input id="posterWide" type="checkbox" checked> Formato miniatura 16:9</label>
+          <button id="generatePoster" class="primary">GENERAR PÓSTER</button>
+          <button id="downloadPoster">DESCARGAR PNG</button>
+        </div>
+
+        <div class="poster-card wide-poster">
+          <h3>Vista previa</h3>
+          <canvas id="posterCanvas" width="1280" height="720"></canvas>
+        </div>
+
+        <div class="poster-card">
+          <h3>Datos usados</h3>
+          <div id="posterInfo" class="poster-info"></div>
+        </div>
+
+        <div class="poster-card">
+          <h3>Historial</h3>
+          <div id="posterHistory" class="poster-list"></div>
+          <button id="clearPosterHistory">BORRAR HISTORIAL</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="garageCodesScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Códigos de garaje</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Exporta e importa configuraciones del coche, HUD, vinilos y ajustes para compartir con amigos.</p>
+
+      <div class="codes-grid">
+        <div class="codes-card featured-codes">
+          <h3>Exportar configuración</h3>
+          <p>Coche seleccionado: <b id="codesCarName">--</b></p>
+          <p>Contenido: <b>coche + vinilos + HUD + gráficos + audio</b></p>
+          <button id="generateGarageCode" class="primary">GENERAR CÓDIGO</button>
+          <button id="copyGarageCode">COPIAR CÓDIGO</button>
+        </div>
+
+        <div class="codes-card wide-codes">
+          <h3>Código generado</h3>
+          <textarea id="garageCodeOutput" rows="7" placeholder="Aquí aparecerá el código..."></textarea>
+        </div>
+
+        <div class="codes-card wide-codes">
+          <h3>Importar configuración</h3>
+          <textarea id="garageCodeInput" rows="7" placeholder="Pega aquí un código de garaje..."></textarea>
+          <button id="importGarageCode" class="primary">IMPORTAR CÓDIGO</button>
+        </div>
+
+        <div class="codes-card">
+          <h3>Últimos códigos</h3>
+          <div id="garageCodesHistory" class="codes-list"></div>
+          <button id="clearGarageCodes">BORRAR HISTORIAL</button>
+        </div>
+
+        <div class="codes-card">
+          <h3>Resultado</h3>
+          <p id="garageCodeStatus">Sin código todavía.</p>
+          <p class="small">No sube nada a internet: todo se guarda en localStorage y en texto copiable.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skillChallengesScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Retos de habilidad</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Supera pruebas cortas de conducción y gana rangos, récords, monedas y XP.</p>
+
+      <div class="skill-grid">
+        <div class="skill-card featured-skill">
+          <h3>Reto activo</h3>
+          <p>Tipo: <b id="skillActiveType">Ninguno</b></p>
+          <p>Objetivo: <b id="skillObjective">--</b></p>
+          <p>Tiempo: <b id="skillTimer">0s</b></p>
+          <p>Puntuación: <b id="skillScore">0</b></p>
+          <div class="loading-bar"><div id="skillProgressFill"></div></div>
+        </div>
+
+        <div class="skill-card">
+          <h3>Pruebas</h3>
+          <button id="startSpeedChallenge" class="primary">VELOCIDAD</button>
+          <button id="startPrecisionChallenge">PRECISIÓN</button>
+          <button id="startControlChallenge">CONTROL</button>
+          <button id="stopSkillChallenge">PARAR RETO</button>
+        </div>
+
+        <div class="skill-card">
+          <h3>Resultado</h3>
+          <p>Último rango: <b id="skillLastRank">--</b></p>
+          <p>Mejor rango: <b id="skillBestRank">--</b></p>
+          <p>Recompensa estimada: <b id="skillReward">0 monedas</b></p>
+          <p>Rachas completadas: <b id="skillStreak">0</b></p>
+        </div>
+
+        <div class="skill-card">
+          <h3>Récords</h3>
+          <div id="skillRecords" class="skill-list"></div>
+        </div>
+
+        <div class="skill-card wide-skill">
+          <h3>Historial</h3>
+          <div id="skillHistory" class="skill-list"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="replayScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Modo repetición</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Guarda el recorrido reciente del coche y reproduce una línea fantasma para comparar trayectorias.</p>
+
+      <div class="replay-grid">
+        <div class="replay-card featured-replay">
+          <h3>Grabación reciente</h3>
+          <p>Muestras guardadas: <b id="replaySampleCount">0</b></p>
+          <p>Duración estimada: <b id="replayDuration">0s</b></p>
+          <p>Estado: <b id="replayStatus">Grabando</b></p>
+          <div class="loading-bar"><div id="replayFill"></div></div>
+        </div>
+
+        <div class="replay-card">
+          <h3>Controles</h3>
+          <button id="toggleReplayRecording" class="primary">PAUSAR GRABACIÓN</button>
+          <button id="playReplayGhost">REPRODUCIR FANTASMA</button>
+          <button id="stopReplayGhost">PARAR FANTASMA</button>
+          <button id="clearReplayData">BORRAR REPETICIÓN</button>
+        </div>
+
+        <div class="replay-card">
+          <h3>Resumen</h3>
+          <p>Velocidad máxima: <b id="replayTopSpeed">0 km/h</b></p>
+          <p>Distancia recorrida: <b id="replayDistance">0 m</b></p>
+          <p>Daño máximo: <b id="replayDamage">0%</b></p>
+          <p>Mejor drift: <b id="replayDrift">0</b></p>
+        </div>
+
+        <div class="replay-card">
+          <h3>Exportar</h3>
+          <button id="exportReplayJSON">EXPORTAR JSON</button>
+          <button id="saveReplayBest">GUARDAR COMO MEJOR</button>
+          <p class="small">El JSON sirve para analizar el recorrido o usarlo como fantasma base.</p>
+        </div>
+
+        <div class="replay-card wide-replay">
+          <h3>Repeticiones guardadas</h3>
+          <div id="savedReplaysList" class="replay-list"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="customRoutesScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Rutas personalizadas</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Crea tus propios recorridos usando checkpoints colocados desde la posición actual del coche.</p>
+
+      <div class="routes-grid">
+        <div class="routes-card featured-routes">
+          <h3>Ruta activa</h3>
+          <label>Nombre de ruta</label>
+          <input id="routeNameInput" maxlength="24" placeholder="Mi ruta neon">
+          <p>Checkpoints: <b id="routePointCount">0</b></p>
+          <p>Estado: <b id="routeStatus">Editando</b></p>
+          <div class="loading-bar"><div id="routeProgressFill"></div></div>
+        </div>
+
+        <div class="routes-card">
+          <h3>Editor</h3>
+          <button id="addRoutePoint" class="primary">AÑADIR CHECKPOINT</button>
+          <button id="undoRoutePoint">DESHACER PUNTO</button>
+          <button id="clearRoutePoints">LIMPIAR RUTA</button>
+          <button id="saveCustomRoute">GUARDAR RUTA</button>
+        </div>
+
+        <div class="routes-card">
+          <h3>Carrera de ruta</h3>
+          <button id="startCustomRoute">CORRER RUTA</button>
+          <button id="stopCustomRoute">PARAR RUTA</button>
+          <p>Siguiente checkpoint: <b id="routeNextPoint">--</b></p>
+          <p>Tiempo: <b id="routeTimer">0s</b></p>
+          <p>Recompensa estimada: <b id="routeReward">0 monedas</b></p>
+        </div>
+
+        <div class="routes-card">
+          <h3>Rutas guardadas</h3>
+          <div id="savedRoutesList" class="routes-list"></div>
+        </div>
+
+        <div class="routes-card wide-routes">
+          <h3>Checkpoints actuales</h3>
+          <div id="routePointsList" class="routes-list"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="hudEditorScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Editor de HUD</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Ajusta el HUD para móvil, PC, directos o capturas de gameplay.</p>
+
+      <div class="hud-editor-grid">
+        <div class="hud-editor-card featured-hud-editor">
+          <h3>Preset</h3>
+          <select id="hudPreset">
+            <option value="default">Normal</option>
+            <option value="mobile">Móvil grande</option>
+            <option value="stream">Directo / Stream</option>
+            <option value="minimal">Minimalista</option>
+            <option value="cinematic">Cinemático</option>
+            <option value="custom">Personalizado</option>
+          </select>
+          <button id="applyHudPreset" class="primary">APLICAR PRESET</button>
+          <button id="resetHudEditor">RESTAURAR HUD</button>
+        </div>
+
+        <div class="hud-editor-card">
+          <h3>Posición</h3>
+          <label>Horizontal</label>
+          <select id="hudPositionX">
+            <option value="left">Izquierda</option>
+            <option value="center">Centro</option>
+            <option value="right">Derecha</option>
+          </select>
+          <label>Vertical</label>
+          <select id="hudPositionY">
+            <option value="top">Arriba</option>
+            <option value="middle">Medio</option>
+            <option value="bottom">Abajo</option>
+          </select>
+        </div>
+
+        <div class="hud-editor-card">
+          <h3>Visual</h3>
+          <label>Tamaño</label>
+          <input id="hudScale" type="range" min="70" max="150" value="100">
+          <p><b id="hudScaleValue">100%</b></p>
+          <label>Transparencia</label>
+          <input id="hudOpacity" type="range" min="25" max="100" value="86">
+          <p><b id="hudOpacityValue">86%</b></p>
+        </div>
+
+        <div class="hud-editor-card">
+          <h3>Opciones</h3>
+          <label><input id="hudCompact" type="checkbox"> Modo compacto</label>
+          <label><input id="hudGlow" type="checkbox" checked> Brillo HUD</label>
+          <label><input id="hudSafeArea" type="checkbox" checked> Zona segura móvil</label>
+          <button id="saveHudEditor">GUARDAR HUD</button>
+        </div>
+
+        <div class="hud-editor-card wide-hud-editor">
+          <h3>Vista rápida</h3>
+          <p id="hudEditorStatus">HUD normal</p>
+          <p class="small">Los cambios se aplican al HUD real del juego y se guardan en exportación/importación.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="extremeWeatherScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Clima Extremo</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Activa eventos de clima difícil y gana recompensas por sobrevivir conduciendo.</p>
+
+      <div class="extreme-weather-grid">
+        <div class="extreme-weather-card featured-extreme-weather">
+          <h3>Evento activo</h3>
+          <p>Tipo: <b id="extremeWeatherType">Ninguno</b></p>
+          <p>Intensidad: <b id="extremeWeatherIntensity">0%</b></p>
+          <p>Tiempo: <b id="extremeWeatherTimer">--</b></p>
+          <div class="loading-bar"><div id="extremeWeatherFill"></div></div>
+        </div>
+
+        <div class="extreme-weather-card">
+          <h3>Eventos</h3>
+          <button id="startStormEvent" class="primary">TORMENTA</button>
+          <button id="startFogEvent">NIEBLA DENSA</button>
+          <button id="startWindEvent">VIENTO FUERTE</button>
+          <button id="stopExtremeWeather">PARAR EVENTO</button>
+        </div>
+
+        <div class="extreme-weather-card">
+          <h3>Recompensas</h3>
+          <p>Tiempo sobrevivido: <b id="extremeWeatherSurvived">0s</b></p>
+          <p>Mejor marca: <b id="extremeWeatherBest">0s</b></p>
+          <p>Bonus estimado: <b id="extremeWeatherReward">0 monedas</b></p>
+        </div>
+
+        <div class="extreme-weather-card wide-extreme-weather">
+          <h3>Consejo de conducción</h3>
+          <p id="extremeWeatherAdvice">El clima está normal.</p>
+          <div id="extremeWeatherLog" class="extreme-weather-log"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="damageProScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Daños Pro</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Controla el estado mecánico, usa kits de reparación y mejora la resistencia del coche.</p>
+
+      <div class="damage-pro-grid">
+        <div class="damage-pro-card featured-damage-pro">
+          <h3>Estado mecánico</h3>
+          <p>Daño actual: <b id="damageProValue">0%</b></p>
+          <p>Estado: <b id="damageProStatus">Perfecto</b></p>
+          <div class="loading-bar"><div id="damageProFill"></div></div>
+          <button id="useRepairKit" class="primary">USAR KIT</button>
+        </div>
+
+        <div class="damage-pro-card">
+          <h3>Inventario</h3>
+          <p>Kits de reparación: <b id="repairKitCount">0</b></p>
+          <p>Resistencia: <b id="carArmorLevel">Nv. 0</b></p>
+          <button id="buyRepairKit">COMPRAR KIT</button>
+          <button id="upgradeCarArmor">MEJORAR RESISTENCIA</button>
+        </div>
+
+        <div class="damage-pro-card">
+          <h3>Consejo mecánico</h3>
+          <p id="damageProAdvice">--</p>
+          <p class="small">Cuanto más daño tengas, peor será la estabilidad y más difícil será escapar o ganar carreras.</p>
+        </div>
+
+        <div class="damage-pro-card wide-damage-pro">
+          <h3>Registro de daños</h3>
+          <div id="damageProLog" class="damage-pro-log"></div>
+          <button id="clearDamageLog">BORRAR REGISTRO</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="telemetryScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Telemetría Pro</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Analiza tu conducción en tiempo real: velocidad, daño, nitro, drift, policía y rendimiento.</p>
+
+      <div class="telemetry-grid">
+        <div class="telemetry-card featured-telemetry">
+          <h3>Resumen de sesión</h3>
+          <p>Velocidad máxima: <b id="telemetryTopSpeed">0 km/h</b></p>
+          <p>Velocidad media: <b id="telemetryAvgSpeed">0 km/h</b></p>
+          <p>Daño máximo: <b id="telemetryMaxDamage">0%</b></p>
+          <p>Tiempo conduciendo: <b id="telemetryDriveTime">0s</b></p>
+          <button id="saveTelemetryRun" class="primary">GUARDAR SESIÓN</button>
+        </div>
+
+        <div class="telemetry-card">
+          <h3>Estado actual</h3>
+          <div id="telemetryLiveStats" class="telemetry-lines"></div>
+        </div>
+
+        <div class="telemetry-card wide-telemetry">
+          <h3>Gráfica rápida</h3>
+          <canvas id="telemetryCanvas" width="760" height="240"></canvas>
+        </div>
+
+        <div class="telemetry-card">
+          <h3>Historial</h3>
+          <div id="telemetryHistory" class="telemetry-history"></div>
+          <button id="clearTelemetryHistory">BORRAR HISTORIAL</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="engineAudioScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Audio Motor Pro</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Sonido procedural de motor, turbo, derrape y sirenas según la conducción.</p>
+
+      <div class="engine-audio-grid">
+        <div class="engine-audio-card featured-engine-audio">
+          <h3>Perfil de motor</h3>
+          <select id="engineAudioPreset">
+            <option value="street">Street</option>
+            <option value="sport">Sport</option>
+            <option value="supercar">Supercar</option>
+            <option value="electric">Eléctrico futurista</option>
+            <option value="off">Apagado</option>
+          </select>
+          <p>Estado: <b id="engineAudioStatus">--</b></p>
+          <button id="engineAudioStart" class="primary">ACTIVAR AUDIO</button>
+          <button id="engineAudioStop">PARAR AUDIO</button>
+        </div>
+
+        <div class="engine-audio-card">
+          <h3>Mezcla</h3>
+          <label>Motor</label>
+          <input id="engineVolume" type="range" min="0" max="100" value="65">
+          <p><b id="engineVolumeValue">65%</b></p>
+
+          <label>Turbo</label>
+          <input id="turboVolume" type="range" min="0" max="100" value="55">
+          <p><b id="turboVolumeValue">55%</b></p>
+        </div>
+
+        <div class="engine-audio-card">
+          <h3>Efectos</h3>
+          <label>Derrape</label>
+          <input id="skidVolume" type="range" min="0" max="100" value="45">
+          <p><b id="skidVolumeValue">45%</b></p>
+
+          <label>Sirenas</label>
+          <input id="sirenVolume" type="range" min="0" max="100" value="50">
+          <p><b id="sirenVolumeValue">50%</b></p>
+        </div>
+
+        <div class="engine-audio-card">
+          <h3>Opciones</h3>
+          <label><input id="engineAudioAuto" type="checkbox" checked> Autoactivar al conducir</label>
+          <label><input id="engineAudioVibration" type="checkbox" checked> Vibración ligera en turbo</label>
+          <button id="saveEngineAudio">GUARDAR AUDIO PRO</button>
+        </div>
+
+        <div class="engine-audio-card wide-engine-audio">
+          <h3>Telemetría de audio</h3>
+          <div id="engineAudioTelemetry" class="engine-audio-telemetry"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="graphicsScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Ajustes gráficos</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Optimiza el juego para móvil, PC o máxima calidad visual.</p>
+
+      <div class="graphics-grid">
+        <div class="graphics-card featured-graphics">
+          <h3>Perfil visual</h3>
+          <select id="graphicsPreset">
+            <option value="mobile">Móvil rápido</option>
+            <option value="balanced">Equilibrado</option>
+            <option value="quality">Calidad alta</option>
+            <option value="ultra">Ultra PC</option>
+            <option value="custom">Personalizado</option>
+          </select>
+          <p>Estado: <b id="graphicsStatus">--</b></p>
+          <button id="applyGraphicsPreset" class="primary">APLICAR PERFIL</button>
+        </div>
+
+        <div class="graphics-card">
+          <h3>Rendimiento</h3>
+          <label>FPS objetivo</label>
+          <select id="graphicsTargetFPS">
+            <option value="30">30 FPS</option>
+            <option value="45">45 FPS</option>
+            <option value="60">60 FPS</option>
+          </select>
+          <label>Escala de resolución</label>
+          <input id="graphicsResolution" type="range" min="55" max="125" value="85">
+          <p><b id="graphicsResolutionValue">85%</b></p>
+        </div>
+
+        <div class="graphics-card">
+          <h3>Mundo</h3>
+          <label>Distancia de render</label>
+          <input id="graphicsRenderDistance" type="range" min="40" max="160" value="90">
+          <p><b id="graphicsRenderDistanceValue">90m</b></p>
+          <label>Densidad de tráfico</label>
+          <input id="graphicsTrafficDensity" type="range" min="0" max="100" value="65">
+          <p><b id="graphicsTrafficDensityValue">65%</b></p>
+        </div>
+
+        <div class="graphics-card">
+          <h3>Efectos</h3>
+          <label><input id="graphicsParticles" type="checkbox" checked> Partículas</label>
+          <label><input id="graphicsWeatherFX" type="checkbox" checked> Clima visual</label>
+          <label><input id="graphicsShadows" type="checkbox"> Sombras extra</label>
+          <label><input id="graphicsReflections" type="checkbox"> Reflejos</label>
+          <button id="saveGraphicsSettings">GUARDAR GRÁFICOS</button>
+        </div>
+
+        <div class="graphics-card wide-graphics">
+          <h3>Diagnóstico rápido</h3>
+          <div id="graphicsReport" class="graphics-report"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="carAlbumScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Álbum de Coches</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Consulta tu colección, rarezas, progreso y recompensas de galería.</p>
+
+      <div class="album-grid">
+        <div class="album-card featured-album">
+          <h3>Progreso de colección</h3>
+          <p>Coches vistos: <b id="albumSeen">0/0</b></p>
+          <p>Coches desbloqueados: <b id="albumUnlocked">0/0</b></p>
+          <p>Puntos de colección: <b id="albumPoints">0</b></p>
+          <div class="loading-bar"><div id="albumFill"></div></div>
+          <button id="claimAlbumReward" class="primary">COBRAR RECOMPENSA</button>
+        </div>
+
+        <div class="album-card">
+          <h3>Filtros</h3>
+          <button id="albumFilterAll">TODOS</button>
+          <button id="albumFilterUnlocked">DESBLOQUEADOS</button>
+          <button id="albumFilterLocked">BLOQUEADOS</button>
+          <button id="albumMarkViewed">MARCAR VISTO</button>
+        </div>
+
+        <div class="album-card wide-album">
+          <h3>Galería</h3>
+          <div id="albumCarsList" class="album-list"></div>
+        </div>
+
+        <div class="album-card">
+          <h3>Detalle</h3>
+          <p id="albumDetailName">Selecciona un coche</p>
+          <p id="albumDetailInfo">--</p>
+          <button id="albumSelectCar">SELECCIONAR COCHE</button>
+          <button id="albumOpenShowroom">VER EN SHOWROOM</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="trophiesScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Trofeos y Medallas</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Completa hitos importantes y reclama recompensas especiales.</p>
+
+      <div class="trophy-grid">
+        <div class="trophy-card featured-trophy">
+          <h3>Galería</h3>
+          <p>Trofeos conseguidos: <b id="trophyCount">0/0</b></p>
+          <p>Puntos de colección: <b id="trophyPoints">0</b></p>
+          <div class="loading-bar"><div id="trophyFill"></div></div>
+          <button id="claimAllTrophies" class="primary">COBRAR DISPONIBLES</button>
+        </div>
+
+        <div class="trophy-card wide-trophy">
+          <h3>Medallas</h3>
+          <div id="trophiesList" class="trophies-list"></div>
+        </div>
+
+        <div class="trophy-card">
+          <h3>Recompensa de colección</h3>
+          <p id="collectionRewardText">Completa trofeos para ganar bonus extra.</p>
+          <button id="claimCollectionReward">COBRAR COLECCIÓN</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="storyScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Modo Historia</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Avanza por capítulos, gana reputación y desbloquea recompensas especiales.</p>
+
+      <div class="story-grid">
+        <div class="story-card featured-story">
+          <h3 id="storyChapterTitle">Capítulo 1</h3>
+          <p id="storyChapterDesc">--</p>
+          <p>Progreso: <b id="storyProgress">0/0</b></p>
+          <div class="loading-bar"><div id="storyFill"></div></div>
+          <button id="claimStoryReward" class="primary">COBRAR CAPÍTULO</button>
+        </div>
+
+        <div class="story-card">
+          <h3>Capítulos</h3>
+          <div id="storyChaptersList" class="story-list"></div>
+        </div>
+
+        <div class="story-card">
+          <h3>Objetivos actuales</h3>
+          <div id="storyObjectivesList" class="story-list"></div>
+        </div>
+
+        <div class="story-card">
+          <h3>Acciones</h3>
+          <button id="startStoryMode">EMPEZAR HISTORIA</button>
+          <button id="resetStoryMode">REINICIAR HISTORIA</button>
+          <p class="small">Los objetivos usan tus estadísticas reales: carreras, drift, policía, crew y eventos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="weeklyScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Eventos semanales</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Completa retos semanales, gana puntos de pase y desbloquea recompensas.</p>
+
+      <div class="weekly-grid">
+        <div class="weekly-card featured-weekly">
+          <h3>Semana activa</h3>
+          <p>Semana: <b id="weeklyKey">--</b></p>
+          <p>Puntos de pase: <b id="passPoints">0</b></p>
+          <p>Nivel de pase: <b id="passLevel">1</b></p>
+          <div class="loading-bar"><div id="passFill"></div></div>
+        </div>
+
+        <div class="weekly-card">
+          <h3>Retos semanales</h3>
+          <div id="weeklyChallengesList" class="weekly-list"></div>
+        </div>
+
+        <div class="weekly-card">
+          <h3>Pase de recompensas</h3>
+          <div id="weeklyRewardsList" class="weekly-list"></div>
+        </div>
+
+        <div class="weekly-card">
+          <h3>Acciones</h3>
+          <button id="refreshWeekly">ACTUALIZAR SEMANA</button>
+          <button id="resetWeekly">RESETEAR SEMANALES</button>
+          <p class="small">Los retos cambian según la semana real del calendario.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="crewScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Equipo de piloto</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Crea tu crew, gana reputación y desbloquea ventajas para carreras, drift, taller y persecuciones.</p>
+
+      <div class="crew-grid">
+        <div class="crew-card featured-crew">
+          <h3 id="crewNameTitle">Crew Neon</h3>
+          <label>Nombre del equipo</label>
+          <input id="crewNameInput" maxlength="20" placeholder="Crew Neon">
+          <p>Nivel crew: <b id="crewLevel">1</b></p>
+          <p>Reputación: <b id="crewRep">0</b></p>
+          <div class="loading-bar"><div id="crewRepFill"></div></div>
+          <button id="saveCrewName" class="primary">GUARDAR NOMBRE</button>
+          <button id="claimCrewBonus">COBRAR BONUS</button>
+        </div>
+
+        <div class="crew-card">
+          <h3>Miembros</h3>
+          <div id="crewMembersList" class="crew-list"></div>
+        </div>
+
+        <div class="crew-card">
+          <h3>Ventajas</h3>
+          <div id="crewPerksList" class="crew-list"></div>
+        </div>
+
+        <div class="crew-card">
+          <h3>Misiones de crew</h3>
+          <div id="crewMissionsList" class="crew-list"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="liveryScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Editor de Vinilos</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Personaliza pintura, vinilo, neón, acabado y matrícula del coche seleccionado.</p>
+
+      <div class="livery-grid">
+        <div class="livery-card featured-livery">
+          <h3>Vista previa</h3>
+          <canvas id="liveryPreview" width="520" height="260"></canvas>
+          <p id="liveryCurrentCar">Coche seleccionado</p>
+        </div>
+
+        <div class="livery-card">
+          <h3>Pintura</h3>
+          <label>Color principal</label>
+          <input id="liveryPrimary" type="color" value="#ff3333">
+          <label>Color secundario</label>
+          <input id="liverySecondary" type="color" value="#00d4ff">
+          <label>Acabado</label>
+          <select id="liveryFinish">
+            <option value="gloss">Brillante</option>
+            <option value="matte">Mate</option>
+            <option value="metal">Metalizado</option>
+            <option value="carbon">Carbono</option>
+          </select>
+        </div>
+
+        <div class="livery-card">
+          <h3>Vinilo</h3>
+          <select id="liveryPattern">
+            <option value="clean">Limpio</option>
+            <option value="stripe">Raya central</option>
+            <option value="double">Doble raya</option>
+            <option value="lightning">Rayo</option>
+            <option value="racing">Racing lateral</option>
+            <option value="cyber">Cyber neon</option>
+          </select>
+          <label>Intensidad</label>
+          <input id="liveryIntensity" type="range" min="20" max="100" value="80">
+        </div>
+
+        <div class="livery-card">
+          <h3>Extras</h3>
+          <label>Neón</label>
+          <select id="liveryNeon">
+            <option value="off">Apagado</option>
+            <option value="blue">Azul</option>
+            <option value="pink">Rosa</option>
+            <option value="green">Verde</option>
+            <option value="orange">Naranja</option>
+          </select>
+          <label>Matrícula</label>
+          <input id="liveryPlate" maxlength="10" placeholder="ATENEA">
+          <button id="saveLivery" class="primary">GUARDAR VINILO</button>
+          <button id="resetLivery">RESTAURAR</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="highlightsScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Momentos destacados</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Guarda y revisa tus mejores momentos para clips, directos o vídeos.</p>
+
+      <div class="highlights-grid">
+        <div class="highlight-card featured-highlight">
+          <h3>Resumen actual</h3>
+          <p>Velocidad máxima: <b id="highlightTopSpeed">0</b></p>
+          <p>Mejor drift: <b id="highlightBestDrift">0</b></p>
+          <p>Persecución: <b id="highlightWanted">0 estrellas</b></p>
+          <p>Último momento: <b id="highlightLast">--</b></p>
+        </div>
+
+        <div class="highlight-card">
+          <h3>Acciones</h3>
+          <button id="saveManualHighlight" class="primary">GUARDAR MOMENTO</button>
+          <button id="copyHighlightSummary">COPIAR RESUMEN</button>
+          <button id="clearHighlights">BORRAR DESTACADOS</button>
+        </div>
+
+        <div class="highlight-card wide-highlight">
+          <h3>Lista de destacados</h3>
+          <div id="highlightsList" class="highlights-list"></div>
+        </div>
+
+        <div class="highlight-card">
+          <h3>Texto para vídeo</h3>
+          <textarea id="highlightVideoText" rows="7" readonly></textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="showroomScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Showroom 3D</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Visualiza el coche seleccionado con ficha técnica y controles de presentación.</p>
+
+      <div class="showroom-grid">
+        <div class="showroom-view">
+          <canvas id="showroomCanvas" width="720" height="430"></canvas>
+          <div class="showroom-controls">
+            <button id="showroomRotate">ROTACIÓN: ON</button>
+            <button id="showroomPrev">◀ COCHE</button>
+            <button id="showroomNext">COCHE ▶</button>
+            <button id="showroomSelect" class="primary">SELECCIONAR</button>
+          </div>
+        </div>
+
+        <div class="showroom-card">
+          <h3 id="showroomCarName">Coche</h3>
+          <p id="showroomCarDesc">--</p>
+          <div class="showroom-stats">
+            <div><span>Velocidad</span><div class="stat-bar"><div id="showroomSpeed"></div></div></div>
+            <div><span>Aceleración</span><div class="stat-bar"><div id="showroomAccel"></div></div></div>
+            <div><span>Manejo</span><div class="stat-bar"><div id="showroomHandling"></div></div></div>
+            <div><span>Nitro</span><div class="stat-bar"><div id="showroomNitro"></div></div></div>
+          </div>
+          <p id="showroomAdvice">--</p>
+          <button id="showroomTestDrive">PRUEBA RÁPIDA</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="championshipScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Campeonato</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Compite en varias rondas, suma puntos y gana el campeonato.</p>
+
+      <div class="champ-grid">
+        <div class="champ-card featured-champ">
+          <h3>Copa activa</h3>
+          <p>Copa: <b id="champName">--</b></p>
+          <p>Ronda: <b id="champRound">0/0</b></p>
+          <p>Puntos: <b id="champPoints">0</b></p>
+          <div class="loading-bar"><div id="champFill"></div></div>
+        </div>
+
+        <div class="champ-card">
+          <h3>Acciones</h3>
+          <button id="startChampionship" class="primary">EMPEZAR COPA</button>
+          <button id="recordChampRace">REGISTRAR RONDA</button>
+          <button id="finishChampionship">TERMINAR COPA</button>
+          <button id="resetChampionship">REINICIAR COPA</button>
+        </div>
+
+        <div class="champ-card">
+          <h3>Clasificación</h3>
+          <div id="champStandings" class="champ-standings"></div>
+        </div>
+
+        <div class="champ-card">
+          <h3>Récords</h3>
+          <p>Copas ganadas: <b id="champWins">0</b></p>
+          <p>Mejor puntuación: <b id="champBest">0</b></p>
+          <p>Premio final: <b id="champReward">--</b></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="driftScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Modo Drift</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Derrapa, encadena combos y consigue monedas extra.</p>
+
+      <div class="drift-grid">
+        <div class="drift-card featured-drift">
+          <h3>Partida drift</h3>
+          <p>Puntuación: <b id="driftScore">0</b></p>
+          <p>Combo: <b id="driftCombo">x1.0</b></p>
+          <p>Tiempo: <b id="driftTimer">--</b></p>
+          <div class="loading-bar"><div id="driftComboFill"></div></div>
+        </div>
+
+        <div class="drift-card">
+          <h3>Controles</h3>
+          <button id="startDriftMode" class="primary">EMPEZAR DRIFT</button>
+          <button id="endDriftMode">TERMINAR DRIFT</button>
+          <button id="resetDriftBest">BORRAR RÉCORD</button>
+        </div>
+
+        <div class="drift-card">
+          <h3>Récords</h3>
+          <p>Mejor puntuación: <b id="driftBest">0</b></p>
+          <p>Mejor combo: <b id="driftBestCombo">x1.0</b></p>
+          <p>Recompensa estimada: <b id="driftReward">0 monedas</b></p>
+        </div>
+
+        <div class="drift-card">
+          <h3>Cómo puntuar</h3>
+          <p class="small">Gira fuerte a velocidad media/alta. Si mantienes el derrape, sube el combo. Si paras demasiado, el combo se corta.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="guidedTutorialScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Tutorial guiado</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Aprende el juego por pasos y gana una recompensa al terminar.</p>
+
+      <div class="tutorial-grid">
+        <div class="tutorial-card">
+          <h3>Estado</h3>
+          <p>Paso actual: <b id="guidedStepName">--</b></p>
+          <p id="guidedStepDesc">--</p>
+          <div class="loading-bar"><div id="guidedTutorialFill"></div></div>
+          <p>Progreso: <b id="guidedTutorialProgress">0/0</b></p>
+        </div>
+
+        <div class="tutorial-card">
+          <h3>Controles</h3>
+          <button id="startGuidedTutorial" class="primary">EMPEZAR / CONTINUAR</button>
+          <button id="skipGuidedStep">SALTAR PASO</button>
+          <button id="resetGuidedTutorial">REINICIAR TUTORIAL</button>
+        </div>
+
+        <div class="tutorial-card">
+          <h3>Recompensa final</h3>
+          <p>Completa todos los pasos para recibir:</p>
+          <p><b>500 monedas + 250 XP + 1 bono de taller</b></p>
+          <p id="guidedRewardStatus">Pendiente</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="accessibilityScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Accesibilidad / Controles</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <p>Ajusta la visibilidad, tamaño del HUD y teclas principales.</p>
+
+      <div class="access-grid">
+        <div class="access-card">
+          <h3>Visual</h3>
+          <button id="highContrastToggle">ALTO CONTRASTE: OFF</button>
+          <button id="bigHudToggle">HUD GRANDE: OFF</button>
+          <button id="reduceMotionToggle">REDUCIR ANIMACIONES: OFF</button>
+        </div>
+
+        <div class="access-card">
+          <h3>Controles jugador 1</h3>
+          <p class="small">Pulsa un botón y luego la tecla nueva.</p>
+          <div class="keybind-grid">
+            <button class="bindBtn" data-action="forward">Acelerar: <b id="bind_forward">W</b></button>
+            <button class="bindBtn" data-action="brake">Frenar: <b id="bind_brake">S</b></button>
+            <button class="bindBtn" data-action="left">Izquierda: <b id="bind_left">A</b></button>
+            <button class="bindBtn" data-action="right">Derecha: <b id="bind_right">D</b></button>
+            <button class="bindBtn" data-action="nitro">Nitro: <b id="bind_nitro">Space</b></button>
+          </div>
+          <button id="resetKeybinds">RESTAURAR TECLAS</button>
+        </div>
+
+        <div class="access-card">
+          <h3>Estado</h3>
+          <p id="accessStatus">Preferencias listas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="settingsScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Ajustes</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+
+      <div class="settings-grid">
+        <div class="setting-card">
+          <h3 data-i18n="languageTitle">Idioma</h3>
+          <p data-i18n="languageDesc">Cambia los textos principales del juego.</p>
+          <div class="selector-row">
+            <button id="langES">ES</button>
+            <button id="langEN">EN</button>
+            <button id="langCA">CA</button>
+          </div>
+          <p><span data-i18n="currentLanguage">Actual</span>: <b id="languageLabel">Español</b></p>
+        </div>
+
+        <div class="setting-card">
+          <h3>Calidad gráfica</h3>
+          <p>Elige baja para móvil, media para jugar normal, alta para PC.</p>
+          <div class="selector-row">
+            <button id="qualityLow">BAJA</button>
+            <button id="qualityMedium" class="primary">MEDIA</button>
+            <button id="qualityHigh">ALTA</button>
+          </div>
+          <p>Actual: <b id="qualityLabel">Media</b></p>
+        </div>
+
+        <div class="setting-card">
+          <h3>Sonido</h3>
+          <p>Activa o desactiva efectos de motor, monedas, choque, nitro y ambiente.</p>
+          <button id="soundToggle" class="primary">SONIDO: ON</button>
+          <p>Volumen ambiente</p>
+          <input id="ambientVolume" type="range" min="0" max="100" value="55">
+          <p>Ambiente: <b id="ambientLabel">55%</b></p>
+        </div>
+
+        <div class="setting-card">
+          <h3>Optimización</h3>
+          <p id="qualityDescription">Sombras medias, partículas normales y resolución equilibrada.</p>
+          <button id="autoPerformanceToggle">AUTO RENDIMIENTO: ON</button>
+          <button id="performanceModeToggle">MODO RENDIMIENTO: OFF</button>
+          <p>Estado: <b id="performanceStatus">Equilibrado</b></p>
+        </div>
+
+        <div class="setting-card">
+          <h3>Controles</h3>
+          <p>Sensibilidad de giro</p>
+          <input id="steerSensitivity" type="range" min="50" max="150" value="100">
+          <p>Botones móvil</p>
+          <input id="buttonScale" type="range" min="75" max="140" value="100">
+          <button id="vibrationToggle">VIBRACIÓN: ON</button>
+        </div>
+
+        <div class="setting-card">
+          <h3>Cámara</h3>
+          <p>Elige el estilo de cámara de conducción.</p>
+          <div class="selector-row">
+            <button id="cameraClose">CERCA</button>
+            <button id="cameraNormal" class="primary">NORMAL</button>
+            <button id="cameraFar">LEJOS</button>
+          </div>
+          <p>Actual: <b id="cameraLabel">Normal</b></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="helpScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Ayuda</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+      <p><b>PC J1:</b> W acelerar, S frenar, A/D girar, Espacio nitro, Escape pausa.</p>
+      <p><b>PC J2:</b> Flechas para conducir, Shift derecho para nitro.</p>
+      <p><b>Móvil:</b> botones táctiles en pantalla.</p>
+      <p data-i18n="helpGoal">Objetivo de esta V66: crear y compartir tu perfil de piloto con estadísticas destacadas.</p>
+    </div>
+  </section>
+
+  <div id="hud" class="hidden">
+    <div><strong id="hudCar">Coche</strong></div>
+    <div>Mapa: <span id="hudMap">Mapa</span></div>
+    <div>Velocidad: <span id="hudSpeed">0</span> km/h</div>
+    <div>Nitro: <span id="hudNitro">100</span>%</div>
+    <div>Monedas carrera: <span id="hudCoins">0</span></div>
+    <div>Monedas totales: <span id="hudWallet">0</span></div>
+    <div>Vuelta: <span id="hudLap">1</span>/<span id="hudTotalLaps">3</span></div>
+    <div>Checkpoint: <span id="hudCheckpoint">0</span>/<span id="hudTotalCheckpoints">5</span></div>
+    <div>Tiempo: <span id="hudTimer">00:00.000</span></div>
+    <div>Récord: <span id="hudBest">--:--.---</span></div>
+    <div>Posición: <span id="hudPosition">1</span>/<span id="hudRacers">4</span></div>
+    <div>Estado: <span id="hudTrackStatus">En pista</span></div>
+    <div>Daños: <span id="hudDamage">0</span>%</div>
+    <div>Modo: <span id="hudMode">Carrera</span></div>
+    <div>Objetivo: <span id="hudObjective">--</span></div>
+    <div>Zona: <span id="hudZone">--</span></div>
+    <div>Clima: <span id="hudWeather">--</span></div>
+    <div>Taller: <span id="hudWorkshopMission">--</span></div>
+    <div>Carrera: <span id="hudCareer">--</span></div>
+    <div>Evento: <span id="hudEvent">--</span></div>
+    <div>GPS: <span id="hudGPS">--</span></div>
+    <div>Radio: <span id="hudRadio">OFF</span></div>
+    <div>Tutorial: <span id="hudGuidedTutorial">--</span></div>
+    <div>Drift: <span id="hudDrift">--</span></div>
+    <div>Búsqueda: <span id="hudWanted">--</span></div>
+    <div>Copa: <span id="hudChampionship">--</span></div>
+    <div>Clip: <span id="hudHighlight">--</span></div>
+    <div>Crew: <span id="hudCrew">--</span></div>
+    <div>Pase: <span id="hudWeekly">--</span></div>
+    <div>Historia: <span id="hudStory">--</span></div>
+    <div>Trofeos: <span id="hudTrophies">--</span></div>
+    <div>Álbum: <span id="hudAlbum">--</span></div>
+    <div>GPU: <span id="hudGraphics">--</span></div>
+    <div>Motor: <span id="hudEngineAudio">--</span></div>
+    <div>Telemetría: <span id="hudTelemetry">--</span></div>
+    <div>Daños: <span id="hudDamagePro">--</span></div>
+    <div>Clima+: <span id="hudExtremeWeather">--</span></div>
+    <div>Ruta: <span id="hudCustomRoute">--</span></div>
+    <div>Replay: <span id="hudReplay">--</span></div>
+    <div>Skill: <span id="hudSkill">--</span></div>
+    <div>Código: <span id="hudGarageCode">--</span></div>
+    <div>Póster: <span id="hudPoster">--</span></div>
+    <div>Tráiler: <span id="hudTrailer">--</span></div>
+    <div>Showroom: <span id="hudShowroomPro">--</span></div>
+    <div>Banco: <span id="hudEconomy">--</span></div>
+    <div>Piezas: <span id="hudPartsPro">--</span></div>
+    <div>Sponsor: <span id="hudSponsors">--</span></div>
+    <div>Temp.: <span id="hudSeason">--</span></div>
+    <div>Piloto: <span id="hudPilotProfile">--</span></div>
+    <div id="hudP2Block">J2: <span id="hudP2">--</span></div>
+    <div>Misión: <span id="hudCityMission">--</span></div>
+    <div>Progreso misión: <span id="hudMissionProgress">--</span></div>
   </div>
 
-  <div id="mobileControls">
-    <div class="control-group">
-      <button class="control-btn" id="leftBtn">←</button>
-      <button class="control-btn" id="rightBtn">→</button>
-    </div>
-    <div class="control-group">
-      <button class="control-btn nitro" id="nitroBtn">NITRO</button>
-      <button class="control-btn" id="brakeBtn">↓</button>
-      <button class="control-btn" id="gasBtn">↑</button>
+  <div id="countdown" class="hidden">3</div>
+
+  <div id="minimap" class="hidden">
+    <div id="miniCar"></div>
+    <div class="mini-cp" style="top:8%;left:48%"></div>
+    <div class="mini-cp" style="top:28%;left:70%"></div>
+    <div class="mini-cp" style="top:52%;left:52%"></div>
+    <div class="mini-cp" style="top:72%;left:26%"></div>
+    <div class="mini-cp" style="top:88%;left:48%"></div>
+  </div>
+
+  <div id="raceResult" class="hidden">
+    <div class="panel">
+      <h2>¡Carrera terminada!</h2>
+      <div class="result-grid">
+        <div class="result-stat">
+          <span>Tiempo final</span>
+          <b id="resultTime">00:00.000</b>
+        </div>
+        <div class="result-stat">
+          <span>Mejor tiempo</span>
+          <b id="resultBest">--:--.---</b>
+        </div>
+        <div class="result-stat">
+          <span>Posición</span>
+          <b id="resultPosition">1/4</b>
+        </div>
+        <div class="result-stat">
+          <span>Recompensa</span>
+          <b id="resultReward">0 monedas</b>
+        </div>
+        <div class="result-stat">
+          <span>Monedas recogidas</span>
+          <b id="resultCoins">0</b>
+        </div>
+        <div class="result-stat">
+          <span>Daños</span>
+          <b id="resultDamage">0%</b>
+        </div>
+      </div>
+      <button id="resultRestart" class="primary">REINTENTAR</button>
+      <button id="resultMenu">MENÚ PRINCIPAL</button>
     </div>
   </div>
 
-  <script type="module">
-    import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
-
-    let scene, camera, renderer, car;
-    let speed = 0;
-    let coins = 0;
-    let nitro = 100;
-    let currentPack = 2;
-    let gameStarted = false;
-    let road, rainParticles, dustParticles;
-
-    const keys = { w: false, s: false, a: false, d: false, nitro: false };
-
-    const speedEl = document.getElementById("speed");
-    const coinsEl = document.getElementById("coins");
-    const nitroEl = document.getElementById("nitro");
-    const packNameEl = document.getElementById("packName");
-    const mapNameEl = document.getElementById("mapName");
-    const menu = document.getElementById("menu");
-
-    const worldObjects = [];
-    const obstacles = [];
-    const coins3d = [];
-    const ramps = [];
-    const roadLines = [];
-
-    init();
-    animate();
-
-    function init() {
-      scene = new THREE.Scene();
-
-      camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-      renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-      document.body.appendChild(renderer.domElement);
-
-      window.addEventListener("resize", onResize);
-      window.addEventListener("keydown", onKeyDown);
-      window.addEventListener("keyup", onKeyUp);
-
-      setupButton("gasBtn", "w");
-      setupButton("brakeBtn", "s");
-      setupButton("leftBtn", "a");
-      setupButton("rightBtn", "d");
-      setupButton("nitroBtn", "nitro");
-
-      document.getElementById("pack1Btn").addEventListener("click", () => startGame(1));
-      document.getElementById("pack2Btn").addEventListener("click", () => startGame(2));
-
-      buildWorld(2);
-      camera.position.set(0, 5.5, 12);
-      camera.lookAt(0, 0.8, 0);
-    }
-
-    function startGame(pack) {
-      currentPack = pack;
-      gameStarted = true;
-      menu.style.display = "none";
-      buildWorld(pack);
-    }
-
-    function clearWorld() {
-      worldObjects.forEach(obj => scene.remove(obj));
-      worldObjects.length = 0;
-      obstacles.length = 0;
-      coins3d.length = 0;
-      ramps.length = 0;
-      roadLines.length = 0;
-      speed = 0;
-      coins = 0;
-      nitro = 100;
-    }
-
-    function add(obj) {
-      scene.add(obj);
-      worldObjects.push(obj);
-      return obj;
-    }
-
-    function buildWorld(pack) {
-      clearWorld();
-
-      if (pack === 1) {
-        scene.background = new THREE.Color(0x030511);
-        scene.fog = new THREE.Fog(0x030511, 35, 150);
-        packNameEl.textContent = "PACK 1:";
-        mapNameEl.textContent = "Ciudad Neon";
-        document.getElementById("hud").querySelector("strong").className = "";
-      } else {
-        scene.background = new THREE.Color(0x180a02);
-        scene.fog = new THREE.Fog(0x180a02, 38, 170);
-        packNameEl.textContent = "PACK 2:";
-        mapNameEl.textContent = "Desierto Industrial";
-        document.getElementById("hud").querySelector("strong").className = "pack2";
-      }
-
-      createLights(pack);
-      createRoad(pack);
-      createCar(pack);
-      createScenery(pack);
-      createObstacles(pack);
-      createCoins();
-      createRamps(pack);
-      createParticles(pack);
-
-      car.position.set(0, 0, 6);
-      car.rotation.set(0, 0, 0);
-    }
-
-    function createLights(pack) {
-      add(new THREE.AmbientLight(pack === 1 ? 0x8fbfff : 0xffd19a, 0.8));
-
-      const main = new THREE.DirectionalLight(0xffffff, 1.3);
-      main.position.set(6, 12, 8);
-      add(main);
-
-      const a = new THREE.PointLight(pack === 1 ? 0x00aaff : 0xff8a00, 4.5, 55);
-      a.position.set(-4, 5, 5);
-      add(a);
-
-      const b = new THREE.PointLight(pack === 1 ? 0xff00cc : 0x00aaff, 3.2, 55);
-      b.position.set(5, 6, -14);
-      add(b);
-    }
-
-    function createRoad(pack) {
-      const roadMat = new THREE.MeshStandardMaterial({
-        color: pack === 1 ? 0x101018 : 0x2a1710,
-        roughness: pack === 1 ? 0.25 : 0.55,
-        metalness: pack === 1 ? 0.15 : 0.05
-      });
-
-      road = add(new THREE.Mesh(new THREE.BoxGeometry(14, 0.25, 950), roadMat));
-      road.position.set(0, -0.15, -280);
-
-      const railMat = new THREE.MeshStandardMaterial({
-        color: pack === 1 ? 0x004dff : 0xff7a00,
-        emissive: pack === 1 ? 0x005dff : 0xff5a00,
-        emissiveIntensity: 1.8
-      });
-
-      [-7.2, 7.2].forEach(x => {
-        const rail = add(new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.2, 950), railMat));
-        rail.position.set(x, 0.06, -280);
-      });
-
-      const lineMat = new THREE.MeshStandardMaterial({
-        color: pack === 1 ? 0x00c8ff : 0xffd166,
-        emissive: pack === 1 ? 0x00aaff : 0xff9500,
-        emissiveIntensity: 1.4
-      });
-
-      for (let i = 0; i < 130; i++) {
-        const line = add(new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.04, 4), lineMat));
-        line.position.set(0, 0.03, 20 - i * 7);
-        roadLines.push(line);
-      }
-    }
-
-    function createCar(pack) {
-      car = new THREE.Group();
-
-      const black = new THREE.MeshStandardMaterial({ color: 0x050507, roughness: 0.22, metalness: 0.72 });
-      const glass = new THREE.MeshStandardMaterial({ color: 0x111827, roughness: 0.1, metalness: 0.25 });
-      const neonColor = pack === 1 ? 0x00bfff : 0xff9500;
-      const neon = new THREE.MeshStandardMaterial({
-        color: neonColor,
-        emissive: neonColor,
-        emissiveIntensity: 2.5
-      });
-      const wheelMat = new THREE.MeshStandardMaterial({ color: 0x050505, roughness: 0.35, metalness: 0.55 });
-
-      const body = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.55, 4.2), black);
-      body.position.y = 0.55;
-      car.add(body);
-
-      const cabin = new THREE.Mesh(new THREE.BoxGeometry(1.55, 0.55, 1.75), glass);
-      cabin.position.set(0, 1.05, -0.35);
-      car.add(cabin);
-
-      const hood = new THREE.Mesh(new THREE.BoxGeometry(2.05, 0.18, 1.35), black);
-      hood.position.set(0, 0.92, 1.05);
-      car.add(hood);
-
-      const spoiler = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.12, 0.35), neon);
-      spoiler.position.set(0, 1.05, -2.2);
-      car.add(spoiler);
-
-      const frontLight = new THREE.Mesh(new THREE.BoxGeometry(1.75, 0.08, 0.08), neon);
-      frontLight.position.set(0, 0.76, 2.15);
-      car.add(frontLight);
-
-      [-1.25, 1.25].forEach(x => {
-        const sideNeon = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.08, 4.2), neon);
-        sideNeon.position.set(x, 0.83, 0);
-        car.add(sideNeon);
-      });
-
-      const wheelPositions = [[-1.25,0.22,1.25],[1.25,0.22,1.25],[-1.25,0.22,-1.25],[1.25,0.22,-1.25]];
-      wheelPositions.forEach(pos => {
-        const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.28, 24), wheelMat);
-        wheel.rotation.z = Math.PI / 2;
-        wheel.position.set(pos[0], pos[1], pos[2]);
-        car.add(wheel);
-
-        const rim = new THREE.Mesh(new THREE.TorusGeometry(0.31, 0.025, 8, 30), neon);
-        rim.rotation.y = Math.PI / 2;
-        rim.position.set(pos[0] + (pos[0] > 0 ? 0.15 : -0.15), pos[1], pos[2]);
-        car.add(rim);
-      });
-
-      add(car);
-    }
-
-    function createScenery(pack) {
-      if (pack === 1) createCity();
-      else createDesertIndustrial();
-    }
-
-    function createCity() {
-      const buildingMat = new THREE.MeshStandardMaterial({ color: 0x121224, roughness: 0.45, metalness: 0.25 });
-      const blueMat = new THREE.MeshStandardMaterial({ color: 0x00aaff, emissive: 0x008cff, emissiveIntensity: 2 });
-      const pinkMat = new THREE.MeshStandardMaterial({ color: 0xff00cc, emissive: 0xff00cc, emissiveIntensity: 2 });
-
-      for (let i = 0; i < 90; i++) {
-        const h = 4 + Math.random() * 16;
-        const building = add(new THREE.Mesh(new THREE.BoxGeometry(2.5, h, 2.5), buildingMat));
-        const side = Math.random() > 0.5 ? 1 : -1;
-        building.position.set(side * (10 + Math.random() * 22), h / 2 - 0.1, 15 - Math.random() * 460);
-
-        const sign = add(new THREE.Mesh(new THREE.BoxGeometry(0.12, h * 0.55, 0.12), Math.random() > 0.5 ? blueMat : pinkMat));
-        sign.position.set(building.position.x, building.position.y, building.position.z + 1.35);
-      }
-    }
-
-    function createDesertIndustrial() {
-      const sandMat = new THREE.MeshStandardMaterial({ color: 0x4a2a14, roughness: 0.85, metalness: 0.02 });
-      const rockMat = new THREE.MeshStandardMaterial({ color: 0x6b3d20, roughness: 0.9 });
-      const metalMat = new THREE.MeshStandardMaterial({ color: 0x231a18, roughness: 0.55, metalness: 0.35 });
-      const orangeNeon = new THREE.MeshStandardMaterial({ color: 0xff8a00, emissive: 0xff6a00, emissiveIntensity: 2 });
-      const blueNeon = new THREE.MeshStandardMaterial({ color: 0x00aaff, emissive: 0x008cff, emissiveIntensity: 1.7 });
-
-      const ground = add(new THREE.Mesh(new THREE.BoxGeometry(110, 0.2, 950), sandMat));
-      ground.position.set(0, -0.35, -280);
-
-      for (let i = 0; i < 70; i++) {
-        const side = Math.random() > 0.5 ? 1 : -1;
-        const rock = add(new THREE.Mesh(
-          new THREE.DodecahedronGeometry(1 + Math.random() * 2.5, 0),
-          rockMat
-        ));
-        rock.scale.y = 0.5 + Math.random() * 1.4;
-        rock.position.set(side * (11 + Math.random() * 36), rock.scale.y * 0.35, 10 - Math.random() * 500);
-        rock.rotation.set(Math.random(), Math.random(), Math.random());
-      }
-
-      for (let i = 0; i < 24; i++) {
-        const side = Math.random() > 0.5 ? 1 : -1;
-        const tower = add(new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.9, 5 + Math.random() * 6, 12), metalMat));
-        tower.position.set(side * (12 + Math.random() * 18), tower.geometry.parameters.height / 2, -5 - i * 18);
-
-        const ring = add(new THREE.Mesh(new THREE.TorusGeometry(1.05, 0.04, 8, 24), Math.random() > 0.5 ? orangeNeon : blueNeon));
-        ring.position.set(tower.position.x, tower.position.y + 1, tower.position.z);
-        ring.rotation.x = Math.PI / 2;
-      }
-
-      for (let i = 0; i < 22; i++) {
-        const side = Math.random() > 0.5 ? 1 : -1;
-        const sign = add(new THREE.Mesh(new THREE.BoxGeometry(0.25, 2.2, 0.25), orangeNeon));
-        sign.position.set(side * 7.8, 1.1, -12 - i * 20);
-      }
-    }
-
-    function createObstacles(pack) {
-      const mat = new THREE.MeshStandardMaterial({
-        color: pack === 1 ? 0xff3333 : 0xff7a00,
-        roughness: 0.4,
-        metalness: 0.35
-      });
-
-      for (let i = 0; i < 30; i++) {
-        const box = add(new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), mat));
-        box.position.set(randomLane(), 0.5, -22 - i * 16);
-        obstacles.push(box);
-      }
-    }
-
-    function createCoins() {
-      const mat = new THREE.MeshStandardMaterial({
-        color: 0xffcc00,
-        emissive: 0xffaa00,
-        emissiveIntensity: 1.2,
-        roughness: 0.25,
-        metalness: 0.8
-      });
-
-      for (let i = 0; i < 50; i++) {
-        const coin = add(new THREE.Mesh(new THREE.TorusGeometry(0.35, 0.09, 12, 28), mat));
-        coin.rotation.x = Math.PI / 2;
-        coin.position.set(randomLane(), 0.65, -15 - i * 10);
-        coins3d.push(coin);
-      }
-    }
-
-    function createRamps(pack) {
-      const mat = new THREE.MeshStandardMaterial({
-        color: pack === 1 ? 0x1a2b44 : 0x4d2b15,
-        roughness: 0.35,
-        metalness: 0.35
-      });
-
-      for (let i = 0; i < 9; i++) {
-        const ramp = add(new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.35, 3), mat));
-        ramp.position.set(randomLane(), 0.08, -55 - i * 48);
-        ramp.rotation.x = -0.26;
-        ramps.push(ramp);
-      }
-    }
-
-    function createParticles(pack) {
-      if (pack === 1) createRain();
-      else createDust();
-    }
-
-    function createRain() {
-      const geo = new THREE.BufferGeometry();
-      const count = 800;
-      const positions = new Float32Array(count * 3);
-
-      for (let i = 0; i < count; i++) {
-        positions[i*3] = (Math.random() - 0.5) * 80;
-        positions[i*3+1] = Math.random() * 45;
-        positions[i*3+2] = 20 - Math.random() * 230;
-      }
-
-      geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-      const mat = new THREE.PointsMaterial({ color: 0x77ccff, size: 0.06, transparent: true, opacity: 0.55 });
-      rainParticles = add(new THREE.Points(geo, mat));
-    }
-
-    function createDust() {
-      const geo = new THREE.BufferGeometry();
-      const count = 500;
-      const positions = new Float32Array(count * 3);
-
-      for (let i = 0; i < count; i++) {
-        positions[i*3] = (Math.random() - 0.5) * 90;
-        positions[i*3+1] = Math.random() * 9;
-        positions[i*3+2] = 20 - Math.random() * 260;
-      }
-
-      geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-      const mat = new THREE.PointsMaterial({ color: 0xffb066, size: 0.12, transparent: true, opacity: 0.32 });
-      dustParticles = add(new THREE.Points(geo, mat));
-    }
-
-    function animate() {
-      requestAnimationFrame(animate);
-
-      if (gameStarted) {
-        updateCar();
-        updateCamera();
-        updateCoins();
-        updateRampJump();
-        checkCollisions();
-        updateParticles();
-      } else if (car) {
-        camera.position.set(0, 5.5, 12);
-        camera.lookAt(0, 0.8, 0);
-      }
-
-      speedEl.textContent = Math.max(0, Math.round(Math.abs(speed) * 185));
-      coinsEl.textContent = coins;
-      nitroEl.textContent = Math.round(nitro);
-
-      renderer.render(scene, camera);
-    }
-
-    function updateCar() {
-      const acceleration = 0.028;
-      const brake = 0.035;
-      const friction = 0.012;
-      const maxSpeed = keys.nitro && nitro > 0 ? 2.05 : 1.35;
-      const reverseSpeed = -0.45;
-      const turnPower = 0.035;
-
-      if (keys.w) speed += acceleration;
-      if (keys.s) speed -= brake;
-
-      if (keys.nitro && nitro > 0 && speed > 0.3) {
-        speed += 0.035;
-        nitro = Math.max(0, nitro - 0.7);
-      } else {
-        nitro = Math.min(100, nitro + 0.11);
-      }
-
-      if (!keys.w && !keys.s) {
-        if (speed > 0) speed -= friction;
-        if (speed < 0) speed += friction;
-        if (Math.abs(speed) < friction) speed = 0;
-      }
-
-      speed = THREE.MathUtils.clamp(speed, reverseSpeed, maxSpeed);
-
-      if (Math.abs(speed) > 0.04) {
-        if (keys.a) car.rotation.y += turnPower * Math.sign(speed);
-        if (keys.d) car.rotation.y -= turnPower * Math.sign(speed);
-      }
-
-      car.position.x -= Math.sin(car.rotation.y) * speed;
-      car.position.z -= Math.cos(car.rotation.y) * speed;
-
-      car.position.x = THREE.MathUtils.clamp(car.position.x, -5.7, 5.7);
-      car.rotation.z = THREE.MathUtils.lerp(car.rotation.z, keys.a ? 0.06 : keys.d ? -0.06 : 0, 0.1);
-
-      if (car.position.y > 0) {
-        car.position.y -= 0.035;
-        if (car.position.y < 0) car.position.y = 0;
-      }
-    }
-
-    function updateCamera() {
-      const offset = new THREE.Vector3(
-        Math.sin(car.rotation.y) * 7,
-        4.8 + car.position.y * 0.7,
-        Math.cos(car.rotation.y) * 8.8
-      );
-
-      camera.position.lerp(car.position.clone().add(offset), 0.08);
-      camera.lookAt(car.position.x, car.position.y + 0.9, car.position.z);
-    }
-
-    function updateCoins() {
-      coins3d.forEach(coin => {
-        coin.rotation.z += 0.08;
-        if (coin.visible && coin.position.distanceTo(car.position) < 1.5) {
-          coin.visible = false;
-          coins++;
-          nitro = Math.min(100, nitro + 5);
-        }
-      });
-    }
-
-    function updateRampJump() {
-      ramps.forEach(ramp => {
-        if (ramp.position.distanceTo(car.position) < 1.8 && speed > 0.45) {
-          car.position.y = Math.max(car.position.y, 1.1);
-          speed += 0.08;
-          showMiniMessage("¡Rampa! Salto + velocidad.");
-        }
-      });
-    }
-
-    function checkCollisions() {
-      obstacles.forEach(obstacle => {
-        if (obstacle.visible && obstacle.position.distanceTo(car.position) < 1.45) {
-          speed *= -0.35;
-          obstacle.visible = false;
-          showMiniMessage("¡Choque! Pierdes velocidad.");
-        }
-      });
-    }
-
-    function updateParticles() {
-      const particles = rainParticles || dustParticles;
-      if (!particles || !car) return;
-
-      const positions = particles.geometry.attributes.position.array;
-      const isRain = currentPack === 1;
-
-      for (let i = 0; i < positions.length; i += 3) {
-        positions[i + 1] -= isRain ? 0.35 : 0.035;
-        positions[i + 2] += isRain ? 0 : 0.18;
-
-        if (positions[i + 1] < 0 || positions[i + 2] > car.position.z + 30) {
-          positions[i + 1] = isRain ? 35 : Math.random() * 8;
-          positions[i] = car.position.x + (Math.random() - 0.5) * 80;
-          positions[i + 2] = car.position.z + 30 - Math.random() * 190;
-        }
-      }
-
-      particles.geometry.attributes.position.needsUpdate = true;
-    }
-
-    function randomLane() {
-      const lanes = [-4, -2, 0, 2, 4];
-      return lanes[Math.floor(Math.random() * lanes.length)];
-    }
-
-    function onKeyDown(event) {
-      const key = event.key.toLowerCase();
-      if (key in keys) keys[key] = true;
-      if (event.code === "Space") keys.nitro = true;
-    }
-
-    function onKeyUp(event) {
-      const key = event.key.toLowerCase();
-      if (key in keys) keys[key] = false;
-      if (event.code === "Space") keys.nitro = false;
-    }
-
-    function setupButton(id, key) {
-      const btn = document.getElementById(id);
-
-      const press = event => {
-        event.preventDefault();
-        keys[key] = true;
-      };
-
-      const release = event => {
-        event.preventDefault();
-        keys[key] = false;
-      };
-
-      btn.addEventListener("touchstart", press, { passive: false });
-      btn.addEventListener("touchend", release, { passive: false });
-      btn.addEventListener("touchcancel", release, { passive: false });
-      btn.addEventListener("mousedown", press);
-      btn.addEventListener("mouseup", release);
-      btn.addEventListener("mouseleave", release);
-    }
-
-    function showMiniMessage(text) {
-      const box = document.getElementById("message");
-      box.textContent = text;
-      clearTimeout(showMiniMessage.timer);
-      showMiniMessage.timer = setTimeout(() => {
-        box.textContent = "PC: W/S acelerar-frenar, A/D girar, ESPACIO nitro. Móvil: botones.";
-      }, 1500);
-    }
-
-    function onResize() {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    }
-  </script>
+  <div id="pauseMenu" class="hidden">
+    <div class="panel">
+      <h2>Pausa</h2>
+      <button id="resumeBtn" class="primary">SEGUIR</button>
+      <button id="pauseSettingsBtn">AJUSTES</button>
+      <button id="restartBtn">REINICIAR</button>
+      <button id="exitBtn">SALIR AL MENÚ</button>
+    </div>
+  </div>
+
+  <div id="mobileControls" class="hidden">
+    <div class="control-group">
+      <button id="leftBtn" class="control-btn">←</button>
+      <button id="rightBtn" class="control-btn">→</button>
+    </div>
+    <div class="control-group">
+      <button id="nitroBtn" class="control-btn nitro">NITRO</button>
+      <button id="brakeBtn" class="control-btn">↓</button>
+      <button id="gasBtn" class="control-btn">↑</button>
+    </div>
+  </div>
+
+  <div id="wantedOverlay" class="hidden">
+    <div id="wantedStars">☆☆☆☆☆</div>
+    <div id="wantedText">Policía buscando...</div>
+  </div>
+
+  <div id="guidedTutorialOverlay" class="hidden">
+    <div id="guidedTutorialBox">
+      <b id="guidedOverlayTitle">Tutorial</b>
+      <p id="guidedOverlayText">--</p>
+      <span id="guidedOverlayProgress">0/0</span>
+    </div>
+  </div>
+  <div id="gpsArrow" class="hidden">▲</div>
+  <div id="photoOverlay" class="hidden"></div>
+  <div id="fpsCounter" class="hidden">FPS: 0</div>
+  <div id="offlineBadge" class="hidden">Modo offline</div>
+  <div id="toast"></div>
+
+  <script type="module" src="src/main.js"></script>
 </body>
 </html>

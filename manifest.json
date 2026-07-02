@@ -1,0 +1,192 @@
+{
+  "cars": [
+    {
+      "id": "rosso_gt",
+      "name": "Rosso GT",
+      "style": "Ferrari style",
+      "file": "assets/models/cars/rosso_gt_ferrari_style.glb",
+      "speed": 9,
+      "acceleration": 8,
+      "handling": 8,
+      "color": "Rojo",
+      "unlock": {
+        "level": 1,
+        "cost": 0
+      }
+    },
+    {
+      "id": "toro_v12",
+      "name": "Toro V12",
+      "style": "Lambo style",
+      "file": "assets/models/cars/toro_v12_lambo_style.glb",
+      "speed": 10,
+      "acceleration": 9,
+      "handling": 7,
+      "color": "Amarillo",
+      "unlock": {
+        "level": 2,
+        "cost": 250
+      }
+    },
+    {
+      "id": "silver_911",
+      "name": "Silver 911",
+      "style": "Porsche style",
+      "file": "assets/models/cars/silver_911_porsche_style.glb",
+      "speed": 8,
+      "acceleration": 8,
+      "handling": 9,
+      "color": "Plata",
+      "unlock": {
+        "level": 4,
+        "cost": 500
+      }
+    },
+    {
+      "id": "blue_racer",
+      "name": "Blue Racer",
+      "style": "McLaren style",
+      "file": "assets/models/cars/blue_racer_mclaren_style.glb",
+      "speed": 9,
+      "acceleration": 9,
+      "handling": 9,
+      "color": "Azul",
+      "unlock": {
+        "level": 6,
+        "cost": 800
+      }
+    }
+  ],
+  "maps": [
+    {
+      "id": "city_neon",
+      "name": "Ciudad Neon",
+      "file": "assets/models/maps/city_neon_track.glb",
+      "theme": "Noche, neón y carretera urbana",
+      "fogColor": "#050610",
+      "accent": "#00aaff",
+      "unlock": {
+        "level": 1,
+        "cost": 0
+      }
+    },
+    {
+      "id": "desert_highway",
+      "name": "Autopista Desértica",
+      "file": "assets/models/maps/desert_highway_track.glb",
+      "theme": "Desierto industrial con luces cálidas",
+      "fogColor": "#180a02",
+      "accent": "#ff8a00",
+      "unlock": {
+        "level": 3,
+        "cost": 350
+      }
+    },
+    {
+      "id": "mountain_night",
+      "name": "Montaña Nocturna",
+      "file": "assets/models/maps/mountain_night_track.glb",
+      "theme": "Carretera fría de montaña",
+      "fogColor": "#07101c",
+      "accent": "#8fd8ff",
+      "unlock": {
+        "level": 5,
+        "cost": 650
+      }
+    }
+  ],
+  "modes": [
+    {
+      "id": "race",
+      "name": "Carrera",
+      "description": "3 vueltas con rivales IA y checkpoints"
+    },
+    {
+      "id": "free",
+      "name": "Mundo libre",
+      "description": "Conduce libremente con tráfico y objetivos"
+    },
+    {
+      "id": "chase",
+      "name": "Persecución",
+      "description": "Escapa de la policía el máximo tiempo posible"
+    }
+  ],
+  "missions": [
+    {
+      "id": "race_finish",
+      "name": "Completa una carrera",
+      "rewardCoins": 120,
+      "rewardXP": 80
+    },
+    {
+      "id": "collect_25",
+      "name": "Consigue 25 monedas en una partida",
+      "rewardCoins": 90,
+      "rewardXP": 60
+    },
+    {
+      "id": "chase_45",
+      "name": "Aguanta 45s en persecución",
+      "rewardCoins": 140,
+      "rewardXP": 90
+    },
+    {
+      "id": "win_race",
+      "name": "Queda 1º en carrera",
+      "rewardCoins": 180,
+      "rewardXP": 120
+    }
+  ],
+  "achievements": [
+    {
+      "id": "first_drive",
+      "name": "Primer arranque",
+      "description": "Empieza tu primera partida",
+      "coins": 50,
+      "xp": 40
+    },
+    {
+      "id": "first_race",
+      "name": "Primera carrera",
+      "description": "Completa una carrera",
+      "coins": 80,
+      "xp": 60
+    },
+    {
+      "id": "collector_50",
+      "name": "Coleccionista",
+      "description": "Recoge 50 monedas en total",
+      "coins": 120,
+      "xp": 80
+    },
+    {
+      "id": "urban_driver",
+      "name": "Piloto urbano",
+      "description": "Completa una misión urbana",
+      "coins": 120,
+      "xp": 90
+    },
+    {
+      "id": "chase_survivor",
+      "name": "Superviviente",
+      "description": "Sobrevive a una persecución",
+      "coins": 140,
+      "xp": 100
+    },
+    {
+      "id": "custom_ride",
+      "name": "Estilo propio",
+      "description": "Guarda una personalización",
+      "coins": 70,
+      "xp": 50
+    },
+    {
+      "id": "upgrade_master",
+      "name": "Mecánico",
+      "description": "Compra una mejora",
+      "coins": 70,
+      "xp": 50
+    }
+  ]
+}
