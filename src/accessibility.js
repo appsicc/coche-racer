@@ -1,17 +1,17 @@
-export const accessState = {
-  highContrast: localStorage.getItem("highContrast") === "on",
-  bigHud: localStorage.getItem("bigHud") === "on",
-  reduceMotion: localStorage.getItem("reduceMotion") === "on",
-  listeningAction: null,
-  keybinds: loadKeybinds()
-};
-
 const DEFAULT_BINDS = {
   forward: "KeyW",
   brake: "KeyS",
   left: "KeyA",
   right: "KeyD",
   nitro: "Space"
+};
+
+export const accessState = {
+  highContrast: localStorage.getItem("highContrast") === "on",
+  bigHud: localStorage.getItem("bigHud") === "on",
+  reduceMotion: localStorage.getItem("reduceMotion") === "on",
+  listeningAction: null,
+  keybinds: loadKeybinds()
 };
 
 const ACTION_LABELS = {
