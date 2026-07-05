@@ -92,10 +92,11 @@ export const state = {
   nitro: 100,
   speed: 0,
   audio: null,
-  clock: new THREE.Clock()
+  clock: new THREE.Clock(),
+  startupWarnings: []
 };
 
-init();
+init().catch(handleStartupError);
 
 async function init() {
   setLoading(25, "Cargando perfil...", "Consejo: mejora el nitro para escapar de la policía.");
@@ -133,7 +134,7 @@ async function init() {
 
   setLoading(65, "Construyendo ciudad...", "Consejo: entra en zonas urbanas para ganar recompensas.");
 
-  setupUI(state, {
+  safeSetup("ui", () => setupUI(state, {
     startRace,
     startFreeMode,
     startChaseMode,
@@ -148,73 +149,75 @@ async function init() {
     resumeGame,
     restartRace,
     exitToMenu
-  });
+  }));
 
-  setupSettingsUI(state, showScreen);
-  setupShopUI(state, showScreen);
-  setupProfileUI(state, showScreen);
-  setupCustomizationUI(state, showScreen);
-  setupSaveUI(state, showScreen);
-  setupControlSettingsUI(state);
-  setupTutorial(state, showScreen);
-  setupAchievementsUI(state, showScreen);
-  setupPWA();
-  setupDevTools(state, showScreen);
-  setupLanguageUI();
-  setupPhotoMode(state, showScreen);
-  setupWeatherUI(state, showScreen);
-  setupRankingUI(state, showScreen);
-  setupWorkshopUI(state, showScreen);
-  setupWorkshopMissionsUI(state, showScreen);
-  setupCareerUI(state, showScreen);
-  setupAdvancedGarageUI(state);
-  setupDailyEventsUI(state, showScreen);
-  setupMapGPS(state, showScreen);
-  setupCarRadio(state, showScreen);
-  setupVisualEffects(state);
-  setupCityLife(state);
-  setupIntelligentTraffic(state);
-  setupPerformanceOptimizer(state);
-  installPressedKeyTracker();
-  setupAccessibility(state, showScreen);
-  setupSaveSlots(state);
-  setupGuidedTutorial(state, showScreen);
-  setupDriftMode(state, showScreen);
-  setupPoliceAdvanced(state);
-  setupChampionship(state, showScreen);
-  setupShowroom(state, showScreen);
-  setupHighlights(state, showScreen);
-  setupLiveryEditor(state, showScreen);
-  setupCrewSystem(state, showScreen);
-  setupWeeklyEvents(state, showScreen);
-  setupStoryMode(state, showScreen);
-  setupTrophies(state, showScreen);
-  setupCarAlbum(state, showScreen);
-  setupGraphicsSettings(state, showScreen);
-  setupEngineAudioPro(state, showScreen);
-  setupTelemetryPro(state, showScreen);
-  setupDamagePro(state, showScreen);
-  setupExtremeWeather(state, showScreen);
-  setupHudEditor(state, showScreen);
-  setupCustomRoutes(state, showScreen);
-  setupReplayMode(state, showScreen);
-  setupSkillChallenges(state, showScreen);
-  setupGarageCodes(state, showScreen);
-  setupPosterCreator(state, showScreen);
-  setupTrailerMode(state, showScreen);
-  setupShowroomPro(state, showScreen);
-  setupEconomyAdvanced(state, showScreen);
-  setupPartsPro(state, showScreen);
-  setupSponsors(state, showScreen);
-  setupSeasonPass(state, showScreen);
-  setupPilotProfile(state, showScreen);
-  setupDiagnosticsCenter(state, showScreen);
-  setupAssetPack(state, showScreen);
-  applyLanguage();
+  safeSetup("settings", () => setupSettingsUI(state, showScreen));
+  safeSetup("shop", () => setupShopUI(state, showScreen));
+  safeSetup("profile", () => setupProfileUI(state, showScreen));
+  safeSetup("customization", () => setupCustomizationUI(state, showScreen));
+  safeSetup("save", () => setupSaveUI(state, showScreen));
+  safeSetup("control-settings", () => setupControlSettingsUI(state));
+  safeSetup("tutorial", () => setupTutorial(state, showScreen));
+  safeSetup("achievements", () => setupAchievementsUI(state, showScreen));
+  safeSetup("pwa", () => setupPWA());
+  safeSetup("dev-tools", () => setupDevTools(state, showScreen));
+  safeSetup("language-ui", () => setupLanguageUI());
+  safeSetup("photo-mode", () => setupPhotoMode(state, showScreen));
+  safeSetup("weather-ui", () => setupWeatherUI(state, showScreen));
+  safeSetup("ranking", () => setupRankingUI(state, showScreen));
+  safeSetup("workshop", () => setupWorkshopUI(state, showScreen));
+  safeSetup("workshop-missions", () => setupWorkshopMissionsUI(state, showScreen));
+  safeSetup("career", () => setupCareerUI(state, showScreen));
+  safeSetup("advanced-garage", () => setupAdvancedGarageUI(state));
+  safeSetup("daily-events", () => setupDailyEventsUI(state, showScreen));
+  safeSetup("map-gps", () => setupMapGPS(state, showScreen));
+  safeSetup("radio", () => setupCarRadio(state, showScreen));
+  safeSetup("visual-effects", () => setupVisualEffects(state));
+  safeSetup("city-life", () => setupCityLife(state));
+  safeSetup("intelligent-traffic", () => setupIntelligentTraffic(state));
+  safeSetup("performance", () => setupPerformanceOptimizer(state));
+  safeSetup("pressed-keys", () => installPressedKeyTracker());
+  safeSetup("accessibility", () => setupAccessibility(state, showScreen));
+  safeSetup("save-slots", () => setupSaveSlots(state));
+  safeSetup("guided-tutorial", () => setupGuidedTutorial(state, showScreen));
+  safeSetup("drift-mode", () => setupDriftMode(state, showScreen));
+  safeSetup("police-advanced", () => setupPoliceAdvanced(state));
+  safeSetup("championship", () => setupChampionship(state, showScreen));
+  safeSetup("showroom", () => setupShowroom(state, showScreen));
+  safeSetup("highlights", () => setupHighlights(state, showScreen));
+  safeSetup("livery-editor", () => setupLiveryEditor(state, showScreen));
+  safeSetup("crew", () => setupCrewSystem(state, showScreen));
+  safeSetup("weekly-events", () => setupWeeklyEvents(state, showScreen));
+  safeSetup("story", () => setupStoryMode(state, showScreen));
+  safeSetup("trophies", () => setupTrophies(state, showScreen));
+  safeSetup("car-album", () => setupCarAlbum(state, showScreen));
+  safeSetup("graphics", () => setupGraphicsSettings(state, showScreen));
+  safeSetup("engine-audio", () => setupEngineAudioPro(state, showScreen));
+  safeSetup("telemetry", () => setupTelemetryPro(state, showScreen));
+  safeSetup("damage", () => setupDamagePro(state, showScreen));
+  safeSetup("extreme-weather", () => setupExtremeWeather(state, showScreen));
+  safeSetup("hud-editor", () => setupHudEditor(state, showScreen));
+  safeSetup("custom-routes", () => setupCustomRoutes(state, showScreen));
+  safeSetup("replay", () => setupReplayMode(state, showScreen));
+  safeSetup("skill-challenges", () => setupSkillChallenges(state, showScreen));
+  safeSetup("garage-codes", () => setupGarageCodes(state, showScreen));
+  safeSetup("poster", () => setupPosterCreator(state, showScreen));
+  safeSetup("trailer", () => setupTrailerMode(state, showScreen));
+  safeSetup("showroom-pro", () => setupShowroomPro(state, showScreen));
+  safeSetup("economy", () => setupEconomyAdvanced(state, showScreen));
+  safeSetup("parts", () => setupPartsPro(state, showScreen));
+  safeSetup("sponsors", () => setupSponsors(state, showScreen));
+  safeSetup("season-pass", () => setupSeasonPass(state, showScreen));
+  safeSetup("pilot-profile", () => setupPilotProfile(state, showScreen));
+  safeSetup("diagnostics", () => setupDiagnosticsCenter(state, showScreen));
+  safeSetup("asset-pack", () => setupAssetPack(state, showScreen));
+  safeSetup("language", () => applyLanguage());
   window.showToast = showToast;
 
-  document.getElementById("resultRestart").onclick = restartRace;
-  document.getElementById("resultMenu").onclick = exitToMenu;
+  safeSetup("result-buttons", () => {
+    document.getElementById("resultRestart").onclick = restartRace;
+    document.getElementById("resultMenu").onclick = exitToMenu;
+  });
 
   await openGaragePreview(false);
   await openMapPreview(false);
@@ -235,6 +238,24 @@ function setLoading(percent, text, tip) {
   if (fill) fill.style.width = percent + "%";
   if (loadingText) loadingText.textContent = text;
   if (loadingTip) loadingTip.textContent = tip;
+}
+
+function safeSetup(label, setupFn) {
+  try {
+    return setupFn();
+  } catch (err) {
+    console.warn(`Modulo opcional omitido durante el arranque: ${label}`, err);
+    state.startupWarnings.push({ label, message: err?.message || String(err) });
+  }
+}
+
+function handleStartupError(err) {
+  console.error("Error al arrancar Racing Realista", err);
+  setLoading(
+    100,
+    "No se pudo completar la carga.",
+    "Recarga la pagina. Si sigue pasando, abre la consola y revisa el error."
+  );
 }
 
 function setupRenderer() {
