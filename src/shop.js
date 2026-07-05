@@ -28,7 +28,7 @@ export function getCurrentUpgrades(state) {
 }
 
 export function getCarStats(state, carIndex = state.selectedCarIndex) {
-  const car = state.manifest?.cars?.[carIndex] || state.manifest?.cars?.[0];
+  const car = state.manifest?.cars?.[carIndex] || state.manifest?.cars?.[0] || {};
   const key = car?.id || "default_car";
   const upgrades = state.upgrades?.[key] || {
     speed: 0,
@@ -39,14 +39,13 @@ export function getCarStats(state, carIndex = state.selectedCarIndex) {
   };
 
   return {
-    maxSpeed: 1.35 + (car?.speed || 0) * 0.055 + upgrades.speed * 0.08,
-    acceleration: 0.75 + (car?.acceleration || 0) * 0.055 + upgrades.acceleration * 0.08,
-    handling: 0.85 + (car?.handling || 0) * 0.04 + upgrades.handling * 0.06,
+    maxSpeed: 1.35 + (car.speed || 0) * 0.055 + upgrades.speed * 0.08,
+    acceleration: 0.75 + (car.acceleration || 0) * 0.055 + upgrades.acceleration * 0.08,
+    handling: 0.85 + (car.handling || 0) * 0.04 + upgrades.handling * 0.06,
     nitroMax: 100 + upgrades.nitro * 12,
     armor: upgrades.armor * 0.08
   };
 }
-
 export function addCoins(state, amount) {
   state.wallet = Math.max(0, (state.wallet || 0) + Math.floor(amount));
   localStorage.setItem("walletCoins", String(state.wallet));

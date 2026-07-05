@@ -1,4 +1,4 @@
-# Juego Coches Realista V66 Perfil de Piloto
+# Juego Coches Realista V68 Pack de Assets
 
 Este proyecto une:
 - coches GLB
@@ -1165,3 +1165,34 @@ http://localhost:8000
 - HUD de perfil de piloto.
 - Guardado/exportación incluye perfil de piloto.
 - Caché PWA actualizada a V66.
+
+## Novedades V67
+- Nuevo menú Diagnóstico.
+- Centro de diagnóstico interno.
+- Revisión de módulos guardados.
+- Detección de JSON local dañado.
+- Estimación de uso de localStorage.
+- Revisión de monedas, coche, mapa, FPS y módulos principales.
+- Puntuación general 0-100.
+- Recomendaciones automáticas.
+- Exportar informe JSON.
+- Limpieza suave de historiales pesados.
+- Marcar caché para refresco.
+- HUD de diagnóstico.
+- Guardado/exportación incluye diagnóstico.
+- Caché PWA actualizada a V67.
+
+
+## Novedades V68
+- Nuevo menú Assets.
+- Pack visual vectorial incluido:
+  - coche deportivo futurista negro con neón azul
+  - mapa ciudad nocturna cyberpunk
+  - icono de nitro azul
+  - moneda dorada
+  - barril rojo obstáculo
+- Prompts organizados en JSON.
+- Prompts de audio para nitro, derrape y música electrónica.
+- Assets preparados en assets/generated.
+- Guía de uso en assets/README_ASSETS_V68.txt.
+- Caché PWA actualizada a V68.

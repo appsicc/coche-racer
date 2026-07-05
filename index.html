@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>Racing Realista V66</title>
+  <title>Racing Realista V68 Fix 1</title>
   <meta name="theme-color" content="#050610" />
   <meta name="description" content="Juego de coches 3D realista con ciudad, carreras, misiones, tienda, progreso y PWA." />
   <link rel="manifest" href="manifest.webmanifest" />
@@ -23,7 +23,7 @@
   <main id="mainMenu" class="screen active">
     <div class="panel main-panel">
       <h1>RACING <span>REALISTA</span></h1>
-      <p data-i18n="mainSubtitle">V66: perfil de piloto, tarjeta compartible, estadísticas destacadas, temporada, patrocinadores, piezas, economía y PWA.</p>
+      <p data-i18n="mainSubtitle">V68: pack de assets, coche futurista, mapa cyberpunk, iconos, prompts de audio, diagnóstico, perfil y PWA.</p>
 
       <div class="mode-grid">
         <button id="playBtn" class="mode-card primary">
@@ -89,6 +89,8 @@
       <button id="hudEditorBtn">EDITOR HUD</button>
       <button id="guidedTutorialBtn">TUTORIAL GUIADO</button>
       <button id="helpBtn" data-i18n="help">AYUDA</button>
+      <button id="diagnosticsBtn">DIAGNÓSTICO</button>
+      <button id="assetPackBtn">ASSETS</button>
     </div>
   </main>
 
@@ -719,6 +721,44 @@
     </div>
   </section>
 
+  <section id="assetPackScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row"><h2>Pack de Assets V68</h2><button class="backBtn">VOLVER</button></div>
+      <p>Assets vectoriales y prompts listos para crear versiones premium en imagen/audio.</p>
+      <div id="assetPackList" class="asset-pack-list"></div>
+      <p class="small">Archivos en assets/generated y prompts en assets/asset_prompts_v68.json.</p>
+    </div>
+  </section>
+
+  <section id="diagnosticsScreen" class="screen">
+    <div class="panel wide">
+      <div class="top-row">
+        <h2>Centro de diagnóstico</h2>
+        <button class="backBtn">VOLVER</button>
+      </div>
+      <p>Revisa módulos, guardado, rendimiento, datos locales y recomendaciones.</p>
+      <div class="diagnostics-grid">
+        <div class="diagnostics-card featured-diagnostics">
+          <h3>Estado general</h3>
+          <p>Puntuación: <b id="diagnosticsScore">0/100</b></p>
+          <p>Estado: <b id="diagnosticsStatus">--</b></p>
+          <p>Último análisis: <b id="diagnosticsLastRun">--</b></p>
+          <div class="loading-bar"><div id="diagnosticsFill"></div></div>
+          <button id="runDiagnostics" class="primary">EJECUTAR ANÁLISIS</button>
+        </div>
+        <div class="diagnostics-card"><h3>Módulos revisados</h3><div id="diagnosticsModules" class="diagnostics-list"></div></div>
+        <div class="diagnostics-card"><h3>Datos locales</h3><div id="diagnosticsStorage" class="diagnostics-list"></div></div>
+        <div class="diagnostics-card">
+          <h3>Acciones</h3>
+          <button id="diagnosticsExportReport">EXPORTAR INFORME</button>
+          <button id="diagnosticsCleanSoft">LIMPIEZA SUAVE</button>
+          <button id="diagnosticsRefreshCache">MARCAR CACHÉ NUEVA</button>
+        </div>
+        <div class="diagnostics-card wide-diagnostics"><h3>Recomendaciones</h3><div id="diagnosticsRecommendations" class="diagnostics-list"></div></div>
+      </div>
+    </div>
+  </section>
+
   <section id="pilotProfileScreen" class="screen">
     <div class="panel wide">
       <div class="top-row">
@@ -1160,7 +1200,7 @@
     <div class="panel wide">
       <div class="top-row">
         <h2>Retos de habilidad</h2>
-        <button class="backBtn">VOLVER</button>src/main.js?v=fix3
+        <button class="backBtn">VOLVER</button>
       </div>
 
       <p>Supera pruebas cortas de conducción y gana rangos, récords, monedas y XP.</p>
@@ -2175,7 +2215,7 @@
       <p><b>PC J1:</b> W acelerar, S frenar, A/D girar, Espacio nitro, Escape pausa.</p>
       <p><b>PC J2:</b> Flechas para conducir, Shift derecho para nitro.</p>
       <p><b>Móvil:</b> botones táctiles en pantalla.</p>
-      <p data-i18n="helpGoal">Objetivo de esta V66: crear y compartir tu perfil de piloto con estadísticas destacadas.</p>
+      <p data-i18n="helpGoal">Objetivo de esta V68: integrar assets visuales y prompts de audio para mejorar el aspecto del juego.</p>
     </div>
   </section>
 
@@ -2229,6 +2269,8 @@
     <div>Sponsor: <span id="hudSponsors">--</span></div>
     <div>Temp.: <span id="hudSeason">--</span></div>
     <div>Piloto: <span id="hudPilotProfile">--</span></div>
+    <div>Diag.: <span id="hudDiagnostics">--</span></div>
+    <div>Assets: <span id="hudAssetPack">--</span></div>
     <div id="hudP2Block">J2: <span id="hudP2">--</span></div>
     <div>Misión: <span id="hudCityMission">--</span></div>
     <div>Progreso misión: <span id="hudMissionProgress">--</span></div>
@@ -2319,6 +2361,6 @@
   <div id="offlineBadge" class="hidden">Modo offline</div>
   <div id="toast"></div>
 
-  <script type="module" src="src/main.js"></script>
+  <script type="module" src="src/main.js?v=68fix1"></script>
 </body>
 </html>

@@ -57,6 +57,7 @@ export function collectSaveData(state) {
     sponsorsData: safeJSON(localStorage.getItem("sponsorsData"), null),
     seasonPassData: safeJSON(localStorage.getItem("seasonPassData"), null),
     pilotProfileData: safeJSON(localStorage.getItem("pilotProfileData"), null),
+    diagnosticsCenterData: safeJSON(localStorage.getItem("diagnosticsCenterData"), null),
     selectedCarIndex: Number(localStorage.getItem("selectedCarIndex") || 0),
     selectedMapIndex: Number(localStorage.getItem("selectedMapIndex") || 0),
     quality: localStorage.getItem("quality") || "medium",
@@ -172,6 +173,7 @@ export function resetSave(state) {
     "sponsorsData",
     "seasonPassData",
     "pilotProfileData",
+    "diagnosticsCenterData",
     "selectedCarIndex",
     "selectedMapIndex",
     "steerSensitivity",
@@ -307,7 +309,9 @@ export function importSaveObject(data) {
     if (data.partsProData) localStorage.setItem("partsProData", JSON.stringify(data.partsProData));
     if (data.sponsorsData) localStorage.setItem("sponsorsData", JSON.stringify(data.sponsorsData));
     if (data.seasonPassData) localStorage.setItem("seasonPassData", JSON.stringify(data.seasonPassData));
-    if (data.pilotProfileData) localStorage.setItem("pilotProfileData", JSON.stringify(data.pilotProfileData));
+    if (data.pilotProfileData) localStorage.setItem("pilotProfileData",
+    "diagnosticsCenterData", JSON.stringify(data.pilotProfileData));
+    if (data.diagnosticsCenterData) localStorage.setItem("diagnosticsCenterData", JSON.stringify(data.diagnosticsCenterData));
     if (data.guidedTutorialData) localStorage.setItem("guidedTutorialData", JSON.stringify(data.guidedTutorialData));
     if (data.driftData) localStorage.setItem("driftData", JSON.stringify(data.driftData));
     localStorage.setItem("driftBestCombo", data.driftBestCombo || "1");
@@ -338,7 +342,9 @@ export function importSaveObject(data) {
     if (data.partsProData) localStorage.setItem("partsProData", JSON.stringify(data.partsProData));
     if (data.sponsorsData) localStorage.setItem("sponsorsData", JSON.stringify(data.sponsorsData));
     if (data.seasonPassData) localStorage.setItem("seasonPassData", JSON.stringify(data.seasonPassData));
-    if (data.pilotProfileData) localStorage.setItem("pilotProfileData", JSON.stringify(data.pilotProfileData));
+    if (data.pilotProfileData) localStorage.setItem("pilotProfileData",
+    "diagnosticsCenterData", JSON.stringify(data.pilotProfileData));
+    if (data.diagnosticsCenterData) localStorage.setItem("diagnosticsCenterData", JSON.stringify(data.diagnosticsCenterData));
 
     alert("Guardado cargado. El juego se reiniciará.");
     location.reload();

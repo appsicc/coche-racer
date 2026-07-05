@@ -1,0 +1,46 @@
+{
+  "images": [
+    {
+      "id": "futuristic_sport_car_black_neon",
+      "file": "assets/generated/futuristic_sport_car_black_neon.svg",
+      "prompt": "Coche deportivo futurista para videojuego de carreras, color negro con detalles azules de neón, vista lateral, estilo 3D, limpio, sin fondo, diseño moderno, ruedas grandes, luces brillantes, preparado para juego móvil."
+    },
+    {
+      "id": "night_cyberpunk_city_race_map",
+      "file": "assets/generated/night_cyberpunk_city_race_map.svg",
+      "prompt": "Mapa de videojuego de carreras en ciudad nocturna, carretera mojada con lluvia, luces de neón, edificios altos, ambiente cyberpunk, señales luminosas, rayos en el cielo, estilo 3D moderno, fondo para juego de coches."
+    },
+    {
+      "id": "nitro_icon_blue_bottle",
+      "file": "assets/generated/nitro_icon_blue_bottle.svg",
+      "prompt": "Icono de nitro para videojuego de coches, botella futurista azul brillante, efecto de energía, estilo 3D, sin fondo, diseño limpio para interfaz."
+    },
+    {
+      "id": "gold_racing_coin",
+      "file": "assets/generated/gold_racing_coin.svg",
+      "prompt": "Moneda dorada para videojuego de carreras, icono 3D, brillo fuerte, estilo arcade, sin fondo, objeto coleccionable."
+    },
+    {
+      "id": "red_metal_barrel_obstacle",
+      "file": "assets/generated/red_metal_barrel_obstacle.svg",
+      "prompt": "Barril metálico rojo para videojuego de coches, objeto obstáculo, estilo 3D, sin fondo, visto en perspectiva, aspecto usado y dañado."
+    }
+  ],
+  "audio": [
+    {
+      "id": "nitro_activation_sfx",
+      "file": "assets/audio_prompts/nitro_activation_sfx_prompt.txt",
+      "prompt": "Sonido futurista de nitro activándose en un coche de carreras, energía azul, impulso rápido, estilo arcade, duración 2 segundos."
+    },
+    {
+      "id": "wet_asphalt_drift_sfx",
+      "file": "assets/audio_prompts/wet_asphalt_drift_sfx_prompt.txt",
+      "prompt": "Sonido de coche derrapando sobre asfalto mojado, neumáticos chillando, efecto realista para videojuego de carreras, duración 2 segundos."
+    },
+    {
+      "id": "night_racing_electronic_music",
+      "file": "assets/audio_prompts/night_racing_electronic_music_prompt.txt",
+      "prompt": "Música electrónica intensa para videojuego de carreras nocturnas, estilo arcade, bajo potente, sintetizadores futuristas, ritmo rápido, sensación de velocidad, energía y competición."
+    }
+  ]
+}

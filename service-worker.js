@@ -1,4 +1,4 @@
-const CACHE_NAME = "racing-realista-v66-fix2";
+const CACHE_NAME = "racing-realista-v68-fix1";
 const LOCAL_ASSETS = [
   "./",
   "./index.html",
@@ -82,6 +82,7 @@ const LOCAL_ASSETS = [
   "./src/sponsors.js",
   "./src/seasonPass.js",
   "./src/pilotProfile.js",
+  "./src/diagnosticsCenter.js",
   "./assets/models/cars/rosso_gt_ferrari_style.glb",
   "./assets/models/cars/toro_v12_lambo_style.glb",
   "./assets/models/cars/silver_911_porsche_style.glb",
@@ -89,6 +90,13 @@ const LOCAL_ASSETS = [
   "./assets/models/maps/city_neon_track.glb",
   "./assets/models/maps/desert_highway_track.glb",
   "./assets/models/maps/mountain_night_track.glb"
+  "./src/assetPack.js",
+  "./assets/generated/futuristic_sport_car_black_neon.svg",
+  "./assets/generated/night_cyberpunk_city_race_map.svg",
+  "./assets/generated/nitro_icon_blue_bottle.svg",
+  "./assets/generated/gold_racing_coin.svg",
+  "./assets/generated/red_metal_barrel_obstacle.svg",
+  "./assets/asset_prompts_v68.json",
 ];
 
 self.addEventListener("install", event => {

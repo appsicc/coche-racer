@@ -69,6 +69,8 @@ import { setupPartsPro, updatePartsPro } from "./partsPro.js";
 import { setupSponsors, updateSponsors } from "./sponsors.js";
 import { setupSeasonPass, updateSeasonPass } from "./seasonPass.js";
 import { setupPilotProfile, updatePilotProfile } from "./pilotProfile.js";
+import { setupDiagnosticsCenter, updateDiagnosticsCenter } from "./diagnosticsCenter.js";
+import { setupAssetPack, updateAssetPack } from "./assetPack.js";
 import { updateFollowCamera } from "./camera.js";
 import { createAudioSystem } from "./audio.js";
 import { setupUI, showScreen, showToast } from "./ui.js";
@@ -206,6 +208,8 @@ async function init() {
   setupSponsors(state, showScreen);
   setupSeasonPass(state, showScreen);
   setupPilotProfile(state, showScreen);
+  setupDiagnosticsCenter(state, showScreen);
+  setupAssetPack(state, showScreen);
   applyLanguage();
   window.showToast = showToast;
 
@@ -611,6 +615,8 @@ function animate() {
   updateSponsors(state);
   updateSeasonPass(state);
   updatePilotProfile(state);
+  updateDiagnosticsCenter(state);
+  updateAssetPack(state);
 
   if ((state.gameMode === "race" || state.gameMode === "free" || state.gameMode === "chase" || state.gameMode === "duel") && !state.paused && state.car) {
     updateCarPhysics(state, controls, dt);
