@@ -219,7 +219,9 @@ async function init() {
     document.getElementById("resultMenu").onclick = exitToMenu;
   });
 
+  setLoading(78, "Cargando coche...", "Si un modelo tarda, se usa un coche temporal.");
   await openGaragePreview(false);
+  setLoading(88, "Cargando mapa...", "Si el mapa tarda, la ciudad base sigue disponible.");
   await openMapPreview(false);
 
   setLoading(100, "Todo listo.", "Consejo: exporta tu progreso antes de probar otra versión.");
@@ -258,6 +260,15 @@ function handleStartupError(err) {
   );
 }
 
+function withTimeout(promise, ms, label) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => {
+      setTimeout(() => reject(new Error(`Tiempo agotado cargando ${label}`)), ms);
+    })
+  ]);
+}
+
 function setupRenderer() {
   state.scene = new THREE.Scene();
   state.scene.background = new THREE.Color(0x050610);
@@ -294,7 +305,7 @@ async function openGaragePreview(show = true) {
   if (state.car) state.scene.remove(state.car);
 
   try {
-    state.car = await loadCar(state.loader, carInfo.file);
+    state.car = await withTimeout(loadCar(state.loader, carInfo.file), 8000, "coche");
   } catch (err) {
     console.warn("No se pudo cargar GLB, usando placeholder", err);
     state.car = createPlaceholderCar();
@@ -320,7 +331,7 @@ async function openMapPreview(show = true) {
   if (state.map) state.scene.remove(state.map);
 
   try {
-    state.map = await loadMap(state.loader, mapInfo.file);
+    state.map = await withTimeout(loadMap(state.loader, mapInfo.file), 10000, "mapa");
     state.scene.add(state.map);
   } catch (err) {
     console.warn("No se pudo cargar mapa GLB", err);

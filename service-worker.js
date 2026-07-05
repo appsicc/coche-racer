@@ -1,4 +1,4 @@
-const CACHE_NAME = "racing-realista-v68-fix2";
+const CACHE_NAME = "racing-realista-v68-fix3";
 const LOCAL_ASSETS = [
   "./",
   "./index.html",
